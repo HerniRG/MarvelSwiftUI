@@ -6,20 +6,83 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		66619D072D009DB2008535F2 /* MarvelWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 66619CFA2D009DB1008535F2 /* MarvelWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		66619D052D009DB2008535F2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66619CDC2D009D66008535F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66619CF92D009DB1008535F2;
+			remoteInfo = "MarvelWatch Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		66619D0B2D009DB2008535F2 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				66619D072D009DB2008535F2 /* MarvelWatch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		66619CE42D009D66008535F2 /* MarvelSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		66619CFA2D009DB1008535F2 /* MarvelWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MarvelWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6634115E2D031CBD001854FB /* Exceptions for "MarvelSwiftUI" folder in "MarvelSwiftUI" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 66619CE32D009D66008535F2 /* MarvelSwiftUI */;
+		};
+		66619D2D2D009F23008535F2 /* Exceptions for "MarvelSwiftUI" folder in "MarvelWatch Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				Info.plist,
+			);
+			target = 66619CF92D009DB1008535F2 /* MarvelWatch Watch App */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		66619CE62D009D66008535F2 /* MarvelSwiftUI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6634115E2D031CBD001854FB /* Exceptions for "MarvelSwiftUI" folder in "MarvelSwiftUI" target */,
+				66619D2D2D009F23008535F2 /* Exceptions for "MarvelSwiftUI" folder in "MarvelWatch Watch App" target */,
+			);
 			path = MarvelSwiftUI;
+			sourceTree = "<group>";
+		};
+		66619CFB2D009DB1008535F2 /* MarvelWatch Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "MarvelWatch Watch App";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		66619CE12D009D66008535F2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66619CF72D009DB1008535F2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				66619CE62D009D66008535F2 /* MarvelSwiftUI */,
+				66619CFB2D009DB1008535F2 /* MarvelWatch Watch App */,
 				66619CE52D009D66008535F2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				66619CE42D009D66008535F2 /* MarvelSwiftUI.app */,
+				66619CFA2D009DB1008535F2 /* MarvelWatch Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -55,10 +120,12 @@
 				66619CE02D009D66008535F2 /* Sources */,
 				66619CE12D009D66008535F2 /* Frameworks */,
 				66619CE22D009D66008535F2 /* Resources */,
+				66619D0B2D009DB2008535F2 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				66619D062D009DB2008535F2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				66619CE62D009D66008535F2 /* MarvelSwiftUI */,
@@ -68,6 +135,29 @@
 			);
 			productName = MarvelSwiftUI;
 			productReference = 66619CE42D009D66008535F2 /* MarvelSwiftUI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		66619CF92D009DB1008535F2 /* MarvelWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66619D082D009DB2008535F2 /* Build configuration list for PBXNativeTarget "MarvelWatch Watch App" */;
+			buildPhases = (
+				66619CF62D009DB1008535F2 /* Sources */,
+				66619CF72D009DB1008535F2 /* Frameworks */,
+				66619CF82D009DB1008535F2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				66619CE62D009D66008535F2 /* MarvelSwiftUI */,
+				66619CFB2D009DB1008535F2 /* MarvelWatch Watch App */,
+			);
+			name = "MarvelWatch Watch App";
+			packageProductDependencies = (
+			);
+			productName = "MarvelWatch Watch App";
+			productReference = 66619CFA2D009DB1008535F2 /* MarvelWatch Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -81,6 +171,9 @@
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					66619CE32D009D66008535F2 = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					66619CF92D009DB1008535F2 = {
 						CreatedOnToolsVersion = 16.1;
 					};
 				};
@@ -100,12 +193,20 @@
 			projectRoot = "";
 			targets = (
 				66619CE32D009D66008535F2 /* MarvelSwiftUI */,
+				66619CF92D009DB1008535F2 /* MarvelWatch Watch App */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		66619CE22D009D66008535F2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66619CF82D009DB1008535F2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +223,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		66619CF62D009DB1008535F2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		66619D062D009DB2008535F2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66619CF92D009DB1008535F2 /* MarvelWatch Watch App */;
+			targetProxy = 66619D052D009DB2008535F2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		66619CF12D009D68008535F2 /* Debug */ = {
@@ -252,6 +368,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MarvelSwiftUI/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -291,6 +408,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MarvelSwiftUI/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -317,6 +435,67 @@
 			};
 			name = Release;
 		};
+		66619D092D009DB2008535F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"MarvelWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 9M98K8Y584;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MarvelWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = herni.rg.MarvelSwiftUI;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = herni.rg.MarvelSwiftUI.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.1;
+			};
+			name = Debug;
+		};
+		66619D0A2D009DB2008535F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"MarvelWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 9M98K8Y584;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MarvelWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = herni.rg.MarvelSwiftUI;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = herni.rg.MarvelSwiftUI.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 11.1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -334,6 +513,15 @@
 			buildConfigurations = (
 				66619CF42D009D68008535F2 /* Debug */,
 				66619CF52D009D68008535F2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66619D082D009DB2008535F2 /* Build configuration list for PBXNativeTarget "MarvelWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66619D092D009DB2008535F2 /* Debug */,
+				66619D0A2D009DB2008535F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

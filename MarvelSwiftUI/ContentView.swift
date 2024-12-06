@@ -1,24 +1,37 @@
+//import SwiftUI
 //
-//  ContentView.swift
-//  MarvelSwiftUI
+//// MARK: - HeroListView
+//struct HeroListView: View {
+//    let heroes = mockHeroes
 //
-//  Created by Hernán Rodríguez on 4/12/24.
+//    var body: some View {
+//        NavigationView {
+//            ScrollView {
+//                VStack(spacing: 24) {
+//                    ForEach(heroes, id: \.id) { hero in
+//                        HeroRow(hero: hero)
+//                    }
+//                }
+//                .padding(.horizontal)
+//                .padding(.top, 8) // Separación inicial
+//            }
+//            .navigationTitle("Marvel Heroes")
+//        }
+//    }
+//}
 //
-
-import SwiftUI
-
-struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
-    }
-}
-
-#Preview {
-    ContentView()
-}
+//// MARK: - Preview
+//struct HeroListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            HeroListView()
+//                .previewDevice("iPhone 14")
+//            HeroListView()
+//                .previewDevice("iPad Pro (12.9-inch)")
+//            HeroListView()
+//                .previewDevice("Apple Watch Series 8 - 45mm")
+//            HeroListView()
+//                .frame(width: 800, height: 600) // macOS
+//        }
+//    }
+//}
