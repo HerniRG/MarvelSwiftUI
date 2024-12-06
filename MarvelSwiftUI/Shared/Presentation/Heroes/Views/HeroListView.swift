@@ -5,35 +5,44 @@
 //  Created by Hernán Rodríguez on 6/12/24.
 //
 
-
 import SwiftUI
 import Combine
 
 // MARK: - HeroListView
 struct HeroListView: View {
-    @State private var viewModel = HeroListViewModel()
+    @State private var viewModel = HeroListViewModel() // Usamos @State para el ViewModel
 
     var body: some View {
         NavigationView {
             Group {
-                if viewModel.isLoading {
+                if viewModel.isLoading && viewModel.heroes.isEmpty {
                     ProgressView("Loading Heroes...")
                         .progressViewStyle(CircularProgressViewStyle())
+                        .padding()
                 } else if let error = viewModel.errorMessage {
                     VStack {
                         Text("Error: \(error)")
                             .foregroundColor(.red)
                             .multilineTextAlignment(.center)
                         Button("Retry") {
-                            viewModel.fetchHeroes()
+                            viewModel.fetchHeroes() // Reintentar la carga de héroes
                         }
                         .padding()
                     }
                 } else {
                     ScrollView {
-                        VStack(spacing: 24) {
+                        LazyVStack(spacing: 24) {
                             ForEach(viewModel.heroes, id: \.id) { hero in
-                                HeroRow(hero: hero)
+                                HeroRow(hero: hero) // Usamos la vista HeroRow que ya tienes
+                                    .onAppear {
+                                        handleHeroAppear(hero: hero)
+                                    }
+                            }
+
+                            if viewModel.isLoading && viewModel.heroes.count < viewModel.totalHeroes {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle())
+                                    .padding()
                             }
                         }
                         .padding(.horizontal)
@@ -43,8 +52,15 @@ struct HeroListView: View {
             }
             .navigationTitle("Marvel Heroes")
             .onAppear {
-                viewModel.fetchHeroes()
+                viewModel.fetchHeroes() // Cargar héroes al aparecer la vista
             }
+        }
+    }
+
+    // Función para manejar la aparición de los héroes
+    private func handleHeroAppear(hero: ResultHero) {
+        if let lastHero = viewModel.heroes.last, lastHero.id == hero.id {
+            viewModel.loadMoreHeroes() // Cargar más héroes cuando llegamos al final
         }
     }
 }

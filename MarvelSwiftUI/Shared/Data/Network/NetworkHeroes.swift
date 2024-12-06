@@ -2,12 +2,12 @@ import Foundation
 
 // Protocolo para manejar llamadas a la API de Marvel relacionadas con héroes
 protocol NetworkHeroesProtocol {
-    func fetchAllHeroes() async -> [ResultHero]?
+    func fetchAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)?
 }
 
 // Implementación de la clase
 final class NetworkHeroes: NetworkHeroesProtocol {
-    func fetchAllHeroes() async -> [ResultHero]? {
+    func fetchAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
         let urlCad = "\(ConstantsApp.CONS_API_URL)\(Endpoints.allHeroes.rawValue)"
         guard var urlComponents = URLComponents(string: urlCad) else {
             NSLog("Error: URL inválida: \(urlCad)")
@@ -18,6 +18,12 @@ final class NetworkHeroes: NetworkHeroesProtocol {
         urlComponents.queryItems = HttpMethods.MarvelAuth.authParameters().map {
             URLQueryItem(name: $0.key, value: $0.value)
         }
+        
+        // Añadimos los parámetros de paginación
+        urlComponents.queryItems?.append(contentsOf: [
+            URLQueryItem(name: "offset", value: "\(offset)"),
+            URLQueryItem(name: "limit", value: "\(limit)")
+        ])
         
         guard let url = urlComponents.url else {
             NSLog("Error: URLComponents no pudo generar una URL válida.")
@@ -48,7 +54,7 @@ final class NetworkHeroes: NetworkHeroesProtocol {
                     do {
                         let heroResponse = try decoder.decode(Heroe.self, from: data)
                         NSLog("Héroes obtenidos: \(heroResponse.data.results.count)")
-                        return heroResponse.data.results
+                        return (heroes: heroResponse.data.results, total: heroResponse.data.total)
                     } catch {
                         NSLog("Error al decodificar la respuesta: \(error.localizedDescription)")
                         NSLog("Respuesta JSON: \(String(data: data, encoding: .utf8) ?? "Datos no válidos")")
@@ -67,24 +73,26 @@ final class NetworkHeroes: NetworkHeroesProtocol {
 
 // Mock para pruebas
 final class NetworkHeroesMock: NetworkHeroesProtocol {
-    func fetchAllHeroes() async -> [ResultHero]? {
-        return [
+    func fetchAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
+        // Generar héroes de prueba basados en el offset y el limit
+        let mockHeroes = (0..<limit).map { index in
             ResultHero(
-                id: 1011334,
-                name: "3-D Man",
-                description: "A classic Marvel character with unique powers.",
+                id: offset + index,
+                name: "Mock Hero \(offset + index)",
+                description: "A mock hero description.",
                 modified: Date(), // Simulación de fecha
                 thumbnail: ThumbnailHero(
                     path: "https://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784",
                     thumbnailExtension: .jpg
                 ),
                 resourceURI: "",
-                comics: ComicsHero(available: 12, collectionURI: "", items: [], returned: 0),
-                series: ComicsHero(available: 3, collectionURI: "", items: [], returned: 0),
-                stories: StoriesHero(available: 5, collectionURI: "", items: [], returned: 0),
-                events: ComicsHero(available: 1, collectionURI: "", items: [], returned: 0),
+                comics: ComicsHero(available: 10, collectionURI: "", items: [], returned: 0),
+                series: ComicsHero(available: 5, collectionURI: "", items: [], returned: 0),
+                stories: StoriesHero(available: 3, collectionURI: "", items: [], returned: 0),
+                events: ComicsHero(available: 2, collectionURI: "", items: [], returned: 0),
                 urls: []
             )
-        ]
+        }
+        return (heroes: mockHeroes, total: 100) // Total simulado
     }
 }

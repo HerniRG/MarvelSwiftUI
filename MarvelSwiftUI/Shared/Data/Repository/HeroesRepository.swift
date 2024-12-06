@@ -5,7 +5,6 @@
 //  Created by Hernán Rodríguez on 6/12/24.
 //
 
-
 import Foundation
 
 // Implementación Real
@@ -16,8 +15,8 @@ final class DefaultHeroesRepository: HeroesRepositoryProtocol {
         self.network = network
     }
 
-    func getAllHeroes() async -> [ResultHero]? {
-        return await network.fetchAllHeroes()
+    func getAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
+        return await network.fetchAllHeroes(offset: offset, limit: limit)
     }
 }
 
@@ -29,7 +28,7 @@ final class DefaultHeroesRepositoryMock: HeroesRepositoryProtocol {
         self.network = network
     }
 
-    func getAllHeroes() async -> [ResultHero]? {
-        return await network.fetchAllHeroes()
+    func getAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
+        return await network.fetchAllHeroes(offset: offset, limit: limit)
     }
 }
