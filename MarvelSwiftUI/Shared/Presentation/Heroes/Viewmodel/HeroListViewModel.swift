@@ -14,11 +14,12 @@ final class HeroListViewModel {
     private let useCase: HeroesUseCaseProtocol
 
     // MARK: - Initializer
-    init(useCase: HeroesUseCaseProtocol = HeroesUseCase(repo: DefaultHeroesRepositoryMock())) {
+    init(useCase: HeroesUseCaseProtocol = HeroesUseCase(repo: DefaultHeroesRepository())) {
         self.useCase = useCase
     }
 
     // MARK: - Methods
+    @MainActor
     func fetchHeroes(reset: Bool = false) {
         // Si es un reset, reinicia el estado
         if reset {
@@ -44,7 +45,8 @@ final class HeroListViewModel {
             isLoading = false
         }
     }
-
+    
+    @MainActor
     func loadMoreHeroes() {
         guard currentOffset < totalHeroes else { return }
         fetchHeroes()
