@@ -6,11 +6,9 @@
 //
 
 import SwiftUI
-import Combine
 
-// MARK: - HeroListView
 struct HeroListView: View {
-    @State private var viewModel = HeroListViewModel() // Usamos @State para el ViewModel
+    @State private var viewModel = HeroListViewModel()
 
     var body: some View {
         NavigationView {
@@ -20,51 +18,70 @@ struct HeroListView: View {
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding()
                 } else if let error = viewModel.errorMessage {
-                    VStack {
-                        Text("Error: \(error)")
-                            .foregroundColor(.red)
-                            .multilineTextAlignment(.center)
-                        Button("Retry") {
-                            viewModel.fetchHeroes() // Reintentar la carga de héroes
-                        }
-                        .padding()
+                    ErrorView(message: error) {
+                        viewModel.fetchHeroes(reset: true)
                     }
                 } else {
-                    ScrollView {
-                        LazyVStack(spacing: 24) {
-                            ForEach(viewModel.heroes, id: \.id) { hero in
-                                HeroRow(hero: hero) // Usamos la vista HeroRow que ya tienes
-                                    .onAppear {
-                                        handleHeroAppear(hero: hero)
-                                    }
-                            }
-
-                            if viewModel.isLoading && viewModel.heroes.count < viewModel.totalHeroes {
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle())
-                                    .padding()
-                            }
-                        }
-                        .padding(.horizontal)
-                        .padding(.top, 8) // Separación inicial
+                    HeroList(heroes: viewModel.heroes) {
+                        viewModel.loadMoreHeroes()
                     }
                 }
             }
             .navigationTitle("Marvel Heroes")
             .onAppear {
-                viewModel.fetchHeroes() // Cargar héroes al aparecer la vista
+                viewModel.fetchHeroes()
             }
-        }
-    }
-
-    // Función para manejar la aparición de los héroes
-    private func handleHeroAppear(hero: ResultHero) {
-        if let lastHero = viewModel.heroes.last, lastHero.id == hero.id {
-            viewModel.loadMoreHeroes() // Cargar más héroes cuando llegamos al final
         }
     }
 }
 
+// MARK: - Subviews
+
+struct HeroList: View {
+    let heroes: [ResultHero]
+    let onLoadMore: () -> Void
+
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 24) {
+                ForEach(heroes, id: \.id) { hero in
+                    VStack {
+                        HeroRow(hero: hero)
+                            .onAppear {
+                                if heroes.last?.id == hero.id {
+                                    onLoadMore()
+                                }
+                            }
+                        if heroes.last?.id == hero.id {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .padding()
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.top, 8)
+        }
+    }
+}
+
+struct ErrorView: View {
+    let message: String
+    let onRetry: () -> Void
+
+    var body: some View {
+        VStack {
+            Text("Error: \(message)")
+                .foregroundColor(.red)
+                .multilineTextAlignment(.center)
+            Button("Retry") {
+                onRetry()
+            }
+            .padding()
+        }
+    }
+}
 // MARK: - Preview
 struct HeroListView_Previews: PreviewProvider {
     static var previews: some View {

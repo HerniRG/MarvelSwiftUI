@@ -1,11 +1,11 @@
 import SwiftUI
 
-// MARK: - HeroRow
 struct HeroRow: View {
     let hero: ResultHero
+    @State private var animate = false // Estado para controlar la animación
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             ZStack(alignment: .bottomLeading) {
                 // Imagen con degradado y sombra
                 AsyncImage(url: URL(string: "\(hero.thumbnail.path).\(hero.thumbnail.thumbnailExtension.rawValue)")) { image in
@@ -22,12 +22,52 @@ struct HeroRow: View {
                             )
                         )
                 } placeholder: {
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.2))
-                        .frame(height: 200)
+                    ZStack {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.2))
+                            .frame(height: 200)
+                            .cornerRadius(12)
+                        
+                        // Fondo de imagen genérica
+                        Image(systemName: "photo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(Color.gray.opacity(0.4))
+                        
+                        // Degradado animado
+                        Rectangle()
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.gray.opacity(0.3), Color.gray.opacity(0.5), Color.gray.opacity(0.3)]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .frame(height: 200)
+                            .cornerRadius(12)
+                            .opacity(0.5)
+                            .mask(
+                                // Máscara con un degradado suave
+                                GeometryReader { geometry in
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [.clear, .white.opacity(0.8), .clear]),
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                    .frame(width: geometry.size.width * 1.2)
+                                    .offset(x: animate ? geometry.size.width : -geometry.size.width)
+                                }
+                            )
+                            .onAppear {
+                                withAnimation(Animation.linear(duration: 1.5).repeatForever(autoreverses: false)) {
+                                    animate = true
+                                }
+                            }
+                    }
                 }
                 .cornerRadius(12)
-
+                
                 // Nombre del héroe sobre la imagen
                 Text(hero.name)
                     .font(.title)
@@ -41,14 +81,14 @@ struct HeroRow: View {
             }
             
             // Descripción e información adicional
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 10) {
                 if !hero.description.isEmpty {
                     Text(hero.description)
                         .font(.body)
                         .foregroundColor(.primary)
                         .lineLimit(3)
                 }
-
+                
                 HStack {
                     HStack {
                         Image(systemName: "book")
@@ -59,7 +99,6 @@ struct HeroRow: View {
                     }
                     
                     Spacer()
-                    
                     HStack {
                         Image(systemName: "film")
                             .foregroundColor(.green)

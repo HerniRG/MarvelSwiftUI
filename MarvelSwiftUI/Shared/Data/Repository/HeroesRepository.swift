@@ -29,6 +29,6 @@ final class DefaultHeroesRepositoryMock: HeroesRepositoryProtocol {
     }
 
     func getAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
-        return await network.fetchAllHeroes(offset: offset, limit: limit)
+        await network.fetchAllHeroes(offset: offset, limit: limit)
     }
 }

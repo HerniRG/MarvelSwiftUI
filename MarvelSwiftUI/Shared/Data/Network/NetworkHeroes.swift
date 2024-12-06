@@ -74,6 +74,9 @@ final class NetworkHeroes: NetworkHeroesProtocol {
 // Mock para pruebas
 final class NetworkHeroesMock: NetworkHeroesProtocol {
     func fetchAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
+        // Simular un retraso de 1 segundo
+        try? await Task.sleep(nanoseconds: 2_000_000_000) // 1 segundo en nanosegundos
+        
         // Generar héroes de prueba basados en el offset y el limit
         let mockHeroes = (0..<limit).map { index in
             ResultHero(
@@ -93,6 +96,7 @@ final class NetworkHeroesMock: NetworkHeroesProtocol {
                 urls: []
             )
         }
+        
         return (heroes: mockHeroes, total: 100) // Total simulado
     }
 }
