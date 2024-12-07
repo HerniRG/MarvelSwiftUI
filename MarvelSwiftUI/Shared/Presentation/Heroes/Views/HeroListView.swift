@@ -9,24 +9,23 @@ import SwiftUI
 
 struct HeroListView: View {
     @State private var viewModel = HeroListViewModel()
-
+    
     var body: some View {
         NavigationView {
-            Group {
+            List {
                 if viewModel.isLoading && viewModel.heroes.isEmpty {
-                    ProgressView("Loading Heroes...")
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .padding()
+                    LoadingView()
                 } else if let error = viewModel.errorMessage {
                     ErrorView(message: error) {
                         viewModel.fetchHeroes(reset: true)
                     }
                 } else {
-                    HeroList(heroes: viewModel.heroes) {
+                    HeroListContent(heroes: viewModel.heroes, isLoading: viewModel.isLoading) {
                         viewModel.loadMoreHeroes()
                     }
                 }
             }
+            .listStyle(PlainListStyle())
             .navigationTitle("Marvel Heroes")
             .onAppear {
                 viewModel.fetchHeroes()
@@ -35,41 +34,48 @@ struct HeroListView: View {
     }
 }
 
-// MARK: - Subviews
-
-struct HeroList: View {
+// MARK: - Subview for Hero List Content
+struct HeroListContent: View {
     let heroes: [ResultHero]
+    let isLoading: Bool
     let onLoadMore: () -> Void
 
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 24) {
-                ForEach(heroes, id: \.id) { hero in
-                    VStack {
-                        HeroRow(hero: hero)
-                            .onAppear {
-                                if heroes.last?.id == hero.id {
-                                    onLoadMore()
-                                }
-                            }
-                        if heroes.last?.id == hero.id {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle())
-                                .padding()
-                        }
+        ForEach(heroes, id: \.id) { hero in
+            HeroRow(hero: hero)
+                .onAppear {
+                    if heroes.last?.id == hero.id {
+                        onLoadMore()
                     }
                 }
+        }
+        
+        if isLoading {
+            HStack {
+                Spacer()
+                ProgressView()
+                Spacer()
             }
-            .padding(.horizontal)
-            .padding(.top, 8)
+            .padding()
         }
     }
 }
 
+// MARK: - Loading View
+struct LoadingView: View {
+    var body: some View {
+        VStack {
+            ProgressView("Loading Heroes...")
+                .frame(maxWidth: .infinity, alignment: .center)
+        }
+    }
+}
+
+// MARK: - Error View
 struct ErrorView: View {
     let message: String
     let onRetry: () -> Void
-
+    
     var body: some View {
         VStack {
             Text("Error: \(message)")
@@ -82,6 +88,7 @@ struct ErrorView: View {
         }
     }
 }
+
 // MARK: - Preview
 struct HeroListView_Previews: PreviewProvider {
     static var previews: some View {
