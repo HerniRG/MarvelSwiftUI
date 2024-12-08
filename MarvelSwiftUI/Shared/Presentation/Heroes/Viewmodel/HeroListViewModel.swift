@@ -3,50 +3,48 @@ import Observation
 
 @Observable
 final class HeroListViewModel {
-    // MARK: - Properties
     var heroes: [ResultHero] = []
-    var isLoading: Bool = false
+    var isLoading = false
     var errorMessage: String?
-    var totalHeroes: Int = 0
 
-    private let limit: Int = 20
-    private var currentOffset: Int = 0
+    private var totalHeroes = 0
+    private let limit = 20
+    private var currentOffset = 0
     private let useCase: HeroesUseCaseProtocol
 
-    // MARK: - Initializer
     init(useCase: HeroesUseCaseProtocol = HeroesUseCase(repo: DefaultHeroesRepository())) {
         self.useCase = useCase
     }
 
-    // MARK: - Methods
-    @MainActor
     func fetchHeroes(reset: Bool = false) {
-        // Si es un reset, reinicia el estado
+        guard !isLoading else { return }
+        
         if reset {
             currentOffset = 0
-            heroes.removeAll()
+            heroes = []
         }
 
-        guard !isLoading else { return }
         isLoading = true
         errorMessage = nil
 
         Task {
-            do {
-                if let result = await useCase.getAllHeroes(offset: currentOffset, limit: limit) {
-                    // Actualizar los datos en el hilo principal
-                    heroes.append(contentsOf: result.heroes)
-                    currentOffset += result.heroes.count
-                    totalHeroes = result.total
-                } else {
-                    errorMessage = "No heroes found."
-                }
+            let result = await useCase.getAllHeroes(offset: currentOffset, limit: limit)
+            if let result = result {
+                heroes.append(contentsOf: result.heroes)
+                currentOffset += result.heroes.count
+                totalHeroes = result.total
+            } else {
+                errorMessage = "No heroes found."
             }
             isLoading = false
         }
     }
-    
-    @MainActor
+
+    func fetchHeroesIfNeeded() {
+        guard heroes.isEmpty else { return }
+        fetchHeroes()
+    }
+
     func loadMoreHeroes() {
         guard currentOffset < totalHeroes else { return }
         fetchHeroes()
