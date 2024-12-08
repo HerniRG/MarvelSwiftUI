@@ -30,9 +30,7 @@ struct SeriesListView: View {
                 .progressViewStyle(CircularProgressViewStyle())
                 .padding()
         } else if let error = viewModel.errorMessage {
-            ErrorView(message: error) {
-                viewModel.fetchSeries(for: characterId)
-            }
+            ErrorView(message: error)
         } else if viewModel.series.isEmpty {
             Text("No series found for this hero.")
                 .font(.headline)

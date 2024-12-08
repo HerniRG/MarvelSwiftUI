@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct ErrorView: View {
-    let message: String
-    let onRetry: () -> Void
+    @Environment(HeroListViewModel.self) var viewmodel
+    
+    private var message: String
+    
+    init(message: String) {
+        self.message = message
+    }
     
     var body: some View {
         VStack {
@@ -17,8 +22,9 @@ struct ErrorView: View {
                 .foregroundColor(.red)
                 .multilineTextAlignment(.center)
             Button("Retry") {
-                onRetry()
+                viewmodel.fetchHeroes(reset: true)
             }
+            .buttonStyle(BorderedButtonStyle())
             .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

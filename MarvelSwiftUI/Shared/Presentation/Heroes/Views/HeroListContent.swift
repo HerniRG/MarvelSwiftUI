@@ -8,23 +8,21 @@
 import SwiftUI
 
 struct HeroListContent: View {
-    let heroes: [ResultHero]
-    let isLoading: Bool
-    let onLoadMore: () -> Void
+    @Environment(HeroListViewModel.self) var viewModel
 
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
-                ForEach(heroes, id: \.id) { hero in
+                ForEach(viewModel.heroes, id: \.id) { hero in
                     HeroRow(hero: hero)
                         .onAppear {
-                            if heroes.last?.id == hero.id {
-                                onLoadMore()
+                            if viewModel.heroes.last?.id == hero.id {
+                                viewModel.loadMoreHeroes()
                             }
                         }
                 }
                 
-                if isLoading {
+                if viewModel.state == .loading {
                     HStack {
                         Spacer()
                         ProgressView("Loading more...")

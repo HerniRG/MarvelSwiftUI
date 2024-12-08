@@ -8,29 +8,23 @@
 import SwiftUI
 
 struct HeroListView: View {
-    @State private var viewModel = HeroListViewModel()
+    @Environment(HeroListViewModel.self) var viewModel
     
     var body: some View {
-        NavigationView {
-                // Contenido principal
-                Group {
-                    if viewModel.isLoading && viewModel.heroes.isEmpty {
-                        LoadingView()
-                    } else if let error = viewModel.errorMessage {
-                        ErrorView(message: error) {
-                            viewModel.fetchHeroes(reset: true)
-                        }
-                    } else {
-                        HeroListContent(
-                            heroes: viewModel.heroes,
-                            isLoading: viewModel.isLoading
-                        ) {
-                            viewModel.loadMoreHeroes()
-                        }
-                    }
+        Group {
+            switch viewModel.state {
+            case .loading:
+                LoadingView() // Pantalla de carga
+                
+            case .loaded:
+                NavigationView {
+                    HeroListContent()
+                        .navigationTitle("Marvel Heroes")
                 }
-            
-            .navigationTitle("Marvel Heroes")
+                
+            case .error(let message):
+                ErrorView(message: message)
+            }
         }
         .onAppear {
             viewModel.fetchHeroesIfNeeded()
