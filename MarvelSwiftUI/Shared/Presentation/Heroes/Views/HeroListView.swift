@@ -12,26 +12,34 @@ struct HeroListView: View {
     
     var body: some View {
         NavigationView {
-            Group {
-                if viewModel.isLoading && viewModel.heroes.isEmpty {
-                    LoadingView()
-                } else if let error = viewModel.errorMessage {
-                    ErrorView(message: error) {
-                        viewModel.fetchHeroes(reset: true)
-                    }
-                } else {
-                    HeroListContent(
-                        heroes: viewModel.heroes,
-                        isLoading: viewModel.isLoading
-                    ) {
-                        viewModel.loadMoreHeroes()
+                // Contenido principal
+                Group {
+                    if viewModel.isLoading && viewModel.heroes.isEmpty {
+                        LoadingView()
+                    } else if let error = viewModel.errorMessage {
+                        ErrorView(message: error) {
+                            viewModel.fetchHeroes(reset: true)
+                        }
+                    } else {
+                        HeroListContent(
+                            heroes: viewModel.heroes,
+                            isLoading: viewModel.isLoading
+                        ) {
+                            viewModel.loadMoreHeroes()
+                        }
                     }
                 }
-            }
+            
             .navigationTitle("Marvel Heroes")
         }
         .onAppear {
             viewModel.fetchHeroesIfNeeded()
         }
+    }
+}
+
+struct HeroListView_Previews: PreviewProvider {
+    static var previews: some View {
+        HeroListView()
     }
 }
