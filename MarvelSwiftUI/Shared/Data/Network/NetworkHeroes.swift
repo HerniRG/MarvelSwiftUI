@@ -2,12 +2,12 @@ import Foundation
 
 // Protocolo para manejar llamadas a la API de Marvel relacionadas con héroes
 protocol NetworkHeroesProtocol {
-    func fetchAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)?
+    func fetchAllHeroes() async -> [ResultHero]?
 }
 
 // Implementación de la clase
 final class NetworkHeroes: NetworkHeroesProtocol {
-    func fetchAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
+    func fetchAllHeroes() async -> [ResultHero]? {
         let urlCad = "\(ConstantsApp.CONS_API_URL)\(Endpoints.allHeroes.rawValue)"
         guard var urlComponents = URLComponents(string: urlCad) else {
             NSLog("Error: URL inválida: \(urlCad)")
@@ -19,12 +19,6 @@ final class NetworkHeroes: NetworkHeroesProtocol {
             URLQueryItem(name: $0.key, value: $0.value)
         }
         
-        // Añadimos los parámetros de paginación
-        urlComponents.queryItems?.append(contentsOf: [
-            URLQueryItem(name: "offset", value: "\(offset)"),
-            URLQueryItem(name: "limit", value: "\(limit)")
-        ])
-        
         guard let url = urlComponents.url else {
             NSLog("Error: URLComponents no pudo generar una URL válida.")
             return nil
@@ -32,36 +26,28 @@ final class NetworkHeroes: NetworkHeroesProtocol {
         
         NSLog("URL final: \(url.absoluteString)")
 
-        var request: URLRequest = URLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = HttpMethods.get
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
             
-            if let resp = response as? HTTPURLResponse {
-                NSLog("Código de respuesta HTTP: \(resp.statusCode)")
-                if resp.statusCode == HttpResponseCodes.success {
-                    // Log del JSON recibido
-                    if let jsonString = String(data: data, encoding: .utf8) {
-                        NSLog("JSON recibido: \(jsonString)")
-                    }
-
-                    // Configurar decodificador
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .iso8601 // Manejo de fechas ISO 8601
-
-                    // Decodificar JSON
-                    do {
-                        let heroResponse = try decoder.decode(Heroe.self, from: data)
-                        NSLog("Héroes obtenidos: \(heroResponse.data.results.count)")
-                        return (heroes: heroResponse.data.results, total: heroResponse.data.total)
-                    } catch {
-                        NSLog("Error al decodificar la respuesta: \(error.localizedDescription)")
-                        NSLog("Respuesta JSON: \(String(data: data, encoding: .utf8) ?? "Datos no válidos")")
-                    }
-                } else {
-                    NSLog("Error HTTP: Código \(resp.statusCode)")
+            if let resp = response as? HTTPURLResponse, resp.statusCode == HttpResponseCodes.success {
+                // Log del JSON recibido (opcional en producción)
+                if let jsonString = String(data: data, encoding: .utf8) {
+                    NSLog("JSON recibido: \(jsonString)")
                 }
+
+                // Configurar decodificador
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+
+                // Decodificar JSON
+                let heroResponse = try decoder.decode(Heroe.self, from: data)
+                NSLog("Héroes obtenidos: \(heroResponse.data.results.count)")
+                return heroResponse.data.results
+            } else {
+                NSLog("Error HTTP: Código \(response as? HTTPURLResponse)?.statusCode ?? 0")
             }
         } catch {
             NSLog("Error al obtener los héroes: \(error.localizedDescription)")
@@ -72,18 +58,19 @@ final class NetworkHeroes: NetworkHeroesProtocol {
 }
 
 // Mock para pruebas
+/// Mock de `NetworkHeroes` para pruebas sin depender de una conexión de red.
 final class NetworkHeroesMock: NetworkHeroesProtocol {
-    func fetchAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
-        // Simular un retraso de 1 segundo
-        try? await Task.sleep(nanoseconds: 2_000_000_000) // 1 segundo en nanosegundos
-        
-        // Generar héroes de prueba basados en el offset y el limit
-        let mockHeroes = (0..<limit).map { index in
+    func fetchAllHeroes() async -> [ResultHero]? {
+        // Simular un retraso de 2 segundos
+        try? await Task.sleep(nanoseconds: 2_000_000_000)
+
+        // Generar héroes de prueba
+        let mockHeroes = (0..<100).map { index in
             ResultHero(
-                id: offset + index,
-                name: "Mock Hero \(offset + index)",
+                id: index,
+                name: "Mock Hero \(index)",
                 description: "A mock hero description.",
-                modified: Date(), // Simulación de fecha
+                modified: Date(),
                 thumbnail: ThumbnailHero(
                     path: "https://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784",
                     thumbnailExtension: .jpg
@@ -97,6 +84,6 @@ final class NetworkHeroesMock: NetworkHeroesProtocol {
             )
         }
         
-        return (heroes: mockHeroes, total: 100) // Total simulado
+        return mockHeroes
     }
 }

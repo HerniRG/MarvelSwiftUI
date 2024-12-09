@@ -22,7 +22,7 @@ struct ErrorView: View {
                 .foregroundColor(.red)
                 .multilineTextAlignment(.center)
             Button("Retry") {
-                viewmodel.fetchHeroes(reset: true)
+                viewmodel.fetchHeroes()
             }
             .buttonStyle(BorderedButtonStyle())
             .padding()

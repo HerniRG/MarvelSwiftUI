@@ -1,20 +1,13 @@
-//
-//  NetworkSeries.swift
-//  MarvelSwiftUI
-//
-//  Created by Hernán Rodríguez on 6/12/24.
-//
-
 import Foundation
 
 // Protocolo para manejar llamadas a la API de Marvel relacionadas con series de héroes
 protocol NetworkSeriesProtocol {
-    func fetchHeroSeries(characterId: String, offset: Int, limit: Int) async -> (series: [Result], total: Int)?
+    func fetchHeroSeries(characterId: String) async -> [Result]?
 }
 
 // Implementación de la clase
 final class NetworkSeries: NetworkSeriesProtocol {
-    func fetchHeroSeries(characterId: String, offset: Int, limit: Int) async -> (series: [Result], total: Int)? {
+    func fetchHeroSeries(characterId: String) async -> [Result]? {
         let urlCad = "\(ConstantsApp.CONS_API_URL)\(Endpoints.heroSeries.rawValue)"
             .replacingOccurrences(of: "{characterId}", with: characterId)
 
@@ -27,12 +20,6 @@ final class NetworkSeries: NetworkSeriesProtocol {
         urlComponents.queryItems = HttpMethods.MarvelAuth.authParameters().map {
             URLQueryItem(name: $0.key, value: $0.value)
         }
-
-        // Añadimos los parámetros de paginación
-        urlComponents.queryItems?.append(contentsOf: [
-            URLQueryItem(name: "offset", value: "\(offset)"),
-            URLQueryItem(name: "limit", value: "\(limit)")
-        ])
 
         // Verificamos que la URL sea válida
         guard let url = urlComponents.url else {
@@ -65,7 +52,7 @@ final class NetworkSeries: NetworkSeriesProtocol {
                     do {
                         let seriesResponse = try decoder.decode(Series.self, from: data)
                         NSLog("Series obtenidas: \(seriesResponse.data.results.count)")
-                        return (series: seriesResponse.data.results, total: seriesResponse.data.total)
+                        return seriesResponse.data.results
                     } catch {
                         NSLog("Error al decodificar la respuesta: \(error.localizedDescription)")
                         NSLog("Respuesta JSON: \(String(data: data, encoding: .utf8) ?? "Datos no válidos")")
@@ -84,19 +71,19 @@ final class NetworkSeries: NetworkSeriesProtocol {
 
 // Mock para pruebas
 final class NetworkSeriesMock: NetworkSeriesProtocol {
-    func fetchHeroSeries(characterId: String, offset: Int, limit: Int) async -> (series: [Result], total: Int)? {
-        // Simular un retraso de 1 segundo
-        try? await Task.sleep(nanoseconds: 2_000_000_000) // 1 segundo en nanosegundos
+    func fetchHeroSeries(characterId: String) async -> [Result]? {
+        // Simular un retraso de 2 segundos
+        try? await Task.sleep(nanoseconds: 2_000_000_000) // 2 segundos en nanosegundos
 
-        // Generar series de prueba basadas en el offset y el limit
-        let mockSeries = (0..<limit).map { index in
+        // Generar series de prueba
+        let mockSeries = (0..<10).map { index in
             Result(
-                id: offset + index,
-                title: "Mock Series \(offset + index)",
+                id: index,
+                title: "Mock Series \(index)",
                 description: "A mock series description.",
-                resourceURI: "https://marvel.com/series/\(offset + index)",
+                resourceURI: "https://marvel.com/series/\(index)",
                 urls: [
-                    URLElement(type: "detail", url: "https://marvel.com/series/\(offset + index)/details")
+                    URLElement(type: "detail", url: "https://marvel.com/series/\(index)/details")
                 ],
                 startYear: 2020,
                 endYear: 2025,
@@ -169,6 +156,6 @@ final class NetworkSeriesMock: NetworkSeriesProtocol {
             )
         }
 
-        return (series: mockSeries, total: 100) // Total simulado
+        return mockSeries
     }
 }

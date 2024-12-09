@@ -1,10 +1,3 @@
-//
-//  SeriesListView.swift
-//  MarvelSwiftUI
-//
-//  Created by Hernán Rodríguez on 6/12/24.
-//
-
 import SwiftUI
 
 struct SeriesListView: View {
@@ -37,33 +30,19 @@ struct SeriesListView: View {
                 .foregroundColor(.gray)
                 .padding()
         } else {
-            SeriesList(series: viewModel.series) {
-                viewModel.loadMoreSeries(for: characterId)
-            }
+            SeriesList(series: viewModel.series)
         }
     }
 }
+
 struct SeriesList: View {
     let series: [Result]
-    let onLoadMore: () -> Void
 
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(series, id: \.id) { serie in
-                    VStack {
-                        SeriesRowView(series: serie)
-                            .onAppear {
-                                if series.last?.id == serie.id {
-                                    onLoadMore()
-                                }
-                            }
-                        if series.last?.id == serie.id {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle())
-                                .padding()
-                        }
-                    }
+                    SeriesRowView(series: serie)
                 }
             }
             .padding(.horizontal)

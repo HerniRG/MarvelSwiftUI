@@ -1,11 +1,3 @@
-//
-//  SeriesRepository.swift
-//  MarvelSwiftUI
-//
-//  Created by Hernán Rodríguez on 6/12/24.
-//
-
-
 import Foundation
 
 // Implementación Real
@@ -16,11 +8,8 @@ final class DefaultSeriesRepository: SeriesRepositoryProtocol {
         self.network = network
     }
 
-    func getHeroSeries(characterId: String, offset: Int, limit: Int) async -> [Result]? {
-        guard let response = await network.fetchHeroSeries(characterId: characterId, offset: offset, limit: limit) else {
-            return nil
-        }
-        return response.series // Solo devuelve la lista de series
+    func getHeroSeries(characterId: String) async -> [Result]? {
+        return await network.fetchHeroSeries(characterId: characterId)
     }
 }
 
@@ -32,10 +21,7 @@ final class DefaultSeriesRepositoryMock: SeriesRepositoryProtocol {
         self.network = network
     }
 
-    func getHeroSeries(characterId: String, offset: Int, limit: Int) async -> [Result]? {
-        guard let response = await network.fetchHeroSeries(characterId: characterId, offset: offset, limit: limit) else {
-            return nil
-        }
-        return response.series // Solo devuelve la lista de series
+    func getHeroSeries(characterId: String) async -> [Result]? {
+        return await network.fetchHeroSeries(characterId: characterId)
     }
 }

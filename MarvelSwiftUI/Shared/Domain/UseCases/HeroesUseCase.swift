@@ -13,7 +13,7 @@ protocol HeroesUseCaseProtocol {
     
     /// Obtiene todos los héroes disponibles
     /// - Returns: Una lista de héroes (`[ResultHero]`) o `nil` en caso de error.
-    func getAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)?
+    func getAllHeroes() async -> [ResultHero]?
 }
 
 /// Implementación del caso de uso de héroes
@@ -24,7 +24,7 @@ final class HeroesUseCase: HeroesUseCaseProtocol {
         self.repo = repo
     }
 
-    func getAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
-        return await repo.getAllHeroes(offset: offset, limit: limit) // Pasa los parámetros offset y limit al repositorio
+    func getAllHeroes() async -> [ResultHero]? {
+        return await repo.getAllHeroes()
     }
 }

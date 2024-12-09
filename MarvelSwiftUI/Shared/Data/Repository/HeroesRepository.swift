@@ -1,10 +1,3 @@
-//
-//  HeroesRepository.swift
-//  MarvelSwiftUI
-//
-//  Created by Hernán Rodríguez on 6/12/24.
-//
-
 import Foundation
 
 // Implementación Real
@@ -15,8 +8,8 @@ final class DefaultHeroesRepository: HeroesRepositoryProtocol {
         self.network = network
     }
 
-    func getAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
-        return await network.fetchAllHeroes(offset: offset, limit: limit)
+    func getAllHeroes() async -> [ResultHero]? {
+        return await network.fetchAllHeroes()
     }
 }
 
@@ -28,7 +21,7 @@ final class DefaultHeroesRepositoryMock: HeroesRepositoryProtocol {
         self.network = network
     }
 
-    func getAllHeroes(offset: Int, limit: Int) async -> (heroes: [ResultHero], total: Int)? {
-        await network.fetchAllHeroes(offset: offset, limit: limit)
+    func getAllHeroes() async -> [ResultHero]? {
+        return await network.fetchAllHeroes()
     }
 }

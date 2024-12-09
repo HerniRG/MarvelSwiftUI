@@ -1,10 +1,3 @@
-//
-//  HeroListView.swift
-//  MarvelSwiftUI
-//
-//  Created by Hernán Rodríguez on 6/12/24.
-//
-
 import SwiftUI
 
 struct HeroListView: View {
@@ -27,7 +20,7 @@ struct HeroListView: View {
             }
         }
         .onAppear {
-            viewModel.fetchHeroesIfNeeded()
+            viewModel.fetchHeroes()
         }
     }
 }
@@ -35,5 +28,6 @@ struct HeroListView: View {
 struct HeroListView_Previews: PreviewProvider {
     static var previews: some View {
         HeroListView()
+            .environment(HeroListViewModel())
     }
 }

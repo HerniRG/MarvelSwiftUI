@@ -44,13 +44,6 @@ struct HeroRow: View {
                 
                 // Información adicional
                 VStack(alignment: .leading, spacing: 8) {
-                    if !hero.description.isEmpty {
-                        Text(hero.description)
-                            .font(.body)
-                            .lineLimit(1)
-                            .foregroundColor(.primary)
-                    }
-                    
                     HStack {
                         Label("\(hero.comics.available) Comics", systemImage: "book.fill")
                             .foregroundColor(.blue)
