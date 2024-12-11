@@ -12,7 +12,7 @@ struct MarvelSwiftUIApp: App {
     @State var viewModel = HeroListViewModel()
     var body: some Scene {
         WindowGroup {
-            HeroListView()
+            RootView()
                 .environment(viewModel)
         }
     }

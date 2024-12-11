@@ -21,7 +21,7 @@ struct RootView: View {
             
         case .loaded:
             withAnimation {
-                HeroListView()
+                HeroListContent()
             }
             
         case .error(message: let message):
@@ -33,7 +33,10 @@ struct RootView: View {
 }
 
 #Preview {
+    let vm = HeroListViewModel(useCase: HeroesUseCaseMock())
+    
+    
     RootView()
-        .environment(HeroListViewModel()) // Configuración del ViewModel en el entorno
+        .environment(vm) // Configuración del ViewModel en el entorno
 }
 

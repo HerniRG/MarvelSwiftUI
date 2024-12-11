@@ -60,30 +60,28 @@ final class NetworkHeroes: NetworkHeroesProtocol {
 // Mock para pruebas
 /// Mock de `NetworkHeroes` para pruebas sin depender de una conexión de red.
 final class NetworkHeroesMock: NetworkHeroesProtocol {
-    func fetchAllHeroes() async -> [ResultHero]? {
-        // Simular un retraso de 2 segundos
-        try? await Task.sleep(nanoseconds: 2_000_000_000)
+    static let mockHeroes: [ResultHero] = (0..<100).map { index in
+        ResultHero(
+            id: index,
+            name: "Mock Hero \(index)",
+            description: "A mock hero description.",
+            modified: Date(),
+            thumbnail: ThumbnailHero(
+                path: "https://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784",
+                thumbnailExtension: .jpg
+            ),
+            resourceURI: "",
+            comics: ComicsHero(available: 10, collectionURI: "", items: [], returned: 0),
+            series: ComicsHero(available: 5, collectionURI: "", items: [], returned: 0),
+            stories: StoriesHero(available: 3, collectionURI: "", items: [], returned: 0),
+            events: ComicsHero(available: 2, collectionURI: "", items: [], returned: 0),
+            urls: []
+        )
+    }
 
-        // Generar héroes de prueba
-        let mockHeroes = (0..<100).map { index in
-            ResultHero(
-                id: index,
-                name: "Mock Hero \(index)",
-                description: "A mock hero description.",
-                modified: Date(),
-                thumbnail: ThumbnailHero(
-                    path: "https://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784",
-                    thumbnailExtension: .jpg
-                ),
-                resourceURI: "",
-                comics: ComicsHero(available: 10, collectionURI: "", items: [], returned: 0),
-                series: ComicsHero(available: 5, collectionURI: "", items: [], returned: 0),
-                stories: StoriesHero(available: 3, collectionURI: "", items: [], returned: 0),
-                events: ComicsHero(available: 2, collectionURI: "", items: [], returned: 0),
-                urls: []
-            )
-        }
-        
-        return mockHeroes
+    func fetchAllHeroes() async -> [ResultHero]? {
+        try? await Task.sleep(nanoseconds: 2_000_000_000) // Simular retraso de 2s
+        print("Mock use case called") // Log para confirmar ejecución
+        return Self.mockHeroes
     }
 }

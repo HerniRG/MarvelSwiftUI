@@ -28,3 +28,15 @@ final class HeroesUseCase: HeroesUseCaseProtocol {
         return await repo.getAllHeroes()
     }
 }
+
+final class HeroesUseCaseMock: HeroesUseCaseProtocol {
+    var repo: HeroesRepositoryProtocol
+
+    init(repo: HeroesRepositoryProtocol = DefaultHeroesRepositoryMock()) {
+        self.repo = repo
+    }
+
+    func getAllHeroes() async -> [ResultHero]? {
+        return await repo.getAllHeroes()
+    }
+}

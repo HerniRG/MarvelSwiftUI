@@ -55,6 +55,13 @@
 			);
 			target = 66619CF92D009DB1008535F2 /* MarvelWatch Watch App */;
 		};
+		667842E32D0A1A9D000BFC59 /* Exceptions for "MarvelWatch Watch App" folder in "MarvelWatch Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"MarvelWatch-Watch-App-Info.plist",
+			);
+			target = 66619CF92D009DB1008535F2 /* MarvelWatch Watch App */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +76,9 @@
 		};
 		66619CFB2D009DB1008535F2 /* MarvelWatch Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				667842E32D0A1A9D000BFC59 /* Exceptions for "MarvelWatch Watch App" folder in "MarvelWatch Watch App" target */,
+			);
 			path = "MarvelWatch Watch App";
 			sourceTree = "<group>";
 		};
@@ -446,6 +456,7 @@
 				DEVELOPMENT_TEAM = 9M98K8Y584;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "MarvelWatch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = MarvelWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = herni.rg.MarvelSwiftUI;
@@ -476,6 +487,7 @@
 				DEVELOPMENT_TEAM = 9M98K8Y584;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "MarvelWatch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = MarvelWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = herni.rg.MarvelSwiftUI;

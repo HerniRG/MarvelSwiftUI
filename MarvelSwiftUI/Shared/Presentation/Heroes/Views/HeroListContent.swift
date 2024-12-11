@@ -2,22 +2,28 @@ import SwiftUI
 
 struct HeroListContent: View {
     @Environment(HeroListViewModel.self) var viewModel
-
+    
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 16) {
-                ForEach(viewModel.heroes, id: \.id) { hero in
-                    HeroRow(hero: hero)
+        NavigationView{
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    ForEach(viewModel.heroes, id: \.id) { hero in
+                        HeroRow(hero: hero)
+                    }
                 }
+                .padding(.horizontal)
+                .navigationTitle("Marvel Heroes")
             }
-            .padding(.horizontal)
         }
+        
     }
 }
 
 struct HeroListContent_Previews: PreviewProvider {
     static var previews: some View {
-        HeroListContent()
-            .environment(HeroListViewModel())
+        let vm = HeroListViewModel(useCase: HeroesUseCaseMock())
+        
+        return HeroListContent()
+            .environment(vm)
     }
 }
