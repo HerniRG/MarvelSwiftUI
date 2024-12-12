@@ -65,11 +65,15 @@ struct HeroRowCompact: View {
                         )
                 )
         }
-        .padding()
+        .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(.white.opacity(0.1))
                 .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(.gray.opacity(0.9), lineWidth: 0.3)
         )
     }
 }

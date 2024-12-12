@@ -80,12 +80,16 @@ struct HeroRowDefault: View {
             .padding()
         }
         .frame(maxWidth: .infinity) // Ancho completo
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(.background))
-        .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
-        
-        .padding([.horizontal, .top]) // Añade espacio exterior
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(.background)
+                        .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4) // Sombra
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.gray.opacity(0.9), lineWidth: 0.3) // Borde fino gris
+                )
+                .padding([.horizontal, .top]) // Añade espacio exterior
     }
 }
 

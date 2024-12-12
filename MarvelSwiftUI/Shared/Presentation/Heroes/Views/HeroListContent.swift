@@ -6,7 +6,7 @@ struct HeroListContent: View {
     var body: some View {
         NavigationView{
             ScrollView {
-                LazyVStack(spacing: 16) {
+                LazyVStack(spacing: 12) {
                     ForEach(viewModel.heroes, id: \.id) { hero in
                         HeroRow(hero: hero)
                     }
@@ -15,7 +15,7 @@ struct HeroListContent: View {
                 .navigationTitle("Marvel Heroes")
             }
         }
-        
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

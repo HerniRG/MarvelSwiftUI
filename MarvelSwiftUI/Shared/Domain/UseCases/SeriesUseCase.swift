@@ -32,3 +32,15 @@ final class SeriesUseCase: SeriesUseCaseProtocol {
         return await repo.getHeroSeries(characterId: characterId)
     }
 }
+
+final class SeriesUseCaseMock: SeriesUseCaseProtocol {
+    var repo: SeriesRepositoryProtocol
+
+    init(repo: SeriesRepositoryProtocol = DefaultSeriesRepositoryMock()) {
+        self.repo = repo
+    }
+
+    func getHeroSeries(characterId: String) async -> [Result]? {
+        return await repo.getHeroSeries(characterId: characterId)
+    }
+}
