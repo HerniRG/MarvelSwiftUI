@@ -72,6 +72,14 @@ struct ThumbnailHero: Codable {
         case path
         case thumbnailExtension = "extension"
     }
+
+    // Formato fijo para imágenes horizontales
+    private let defaultVariant = "landscape_amazing"
+
+    // Método para obtener la URL con formato fijo
+    func url() -> String {
+        return "\(path)/\(defaultVariant).\(thumbnailExtension.rawValue)"
+    }
 }
 
 enum ExtensionHero: String, Codable {

@@ -4,11 +4,13 @@ struct HeroListContent: View {
     @Environment(HeroListViewModel.self) var viewModel
     
     var body: some View {
-        NavigationView{
+        NavigationView {
             ScrollView {
                 LazyVStack(spacing: 12) {
                     ForEach(viewModel.heroes, id: \.id) { hero in
-                        HeroRow(hero: hero)
+                        NavigationLink(destination: SeriesListView(characterId: "\(hero.id)")) {
+                            HeroRow(hero: hero)
+                        }
                     }
                 }
                 .padding(.horizontal)
