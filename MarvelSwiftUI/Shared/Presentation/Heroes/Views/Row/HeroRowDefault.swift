@@ -12,7 +12,7 @@ struct HeroRowDefault: View {
                     case .empty:
                         ZStack {
                             Color.gray.opacity(0.2)
-                                .frame(height: 150)
+                                .frame(height: 200) // Aumenta la altura aquí
                                 .cornerRadius(10) // Redondeo completo
                             ProgressView()
                         }
@@ -20,21 +20,21 @@ struct HeroRowDefault: View {
                         image
                             .resizable()
                             .scaledToFill()
-                            .frame(height: 150)
+                            .frame(height: 200) // Aumenta la altura aquí
                             .clipped()
                             .transition(.opacity) // Transición suave
                             .cornerRadius(10) // Redondeo completo
                     case .failure:
                         ZStack {
                             Color.gray.opacity(0.2)
-                                .frame(height: 150)
+                                .frame(height: 200) // Aumenta la altura aquí
                                 .cornerRadius(10) // Redondeo completo
                             Text("Image not available")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     @unknown default:
-                        Color.gray.frame(height: 150)
+                        Color.gray.frame(height: 200) // Aumenta la altura aquí
                             .cornerRadius(10) // Redondeo completo
                     }
                 }
@@ -80,16 +80,16 @@ struct HeroRowDefault: View {
             .padding()
         }
         .frame(maxWidth: .infinity) // Ancho completo
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(.background)
-                        .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4) // Sombra
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.9), lineWidth: 0.3) // Borde fino gris
-                )
-                .padding([.horizontal, .top]) // Añade espacio exterior
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.background)
+                .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4) // Sombra
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.gray.opacity(0.9), lineWidth: 0.3) // Borde fino gris
+        )
+        .padding([.horizontal, .top]) // Añade espacio exterior
     }
 }
 

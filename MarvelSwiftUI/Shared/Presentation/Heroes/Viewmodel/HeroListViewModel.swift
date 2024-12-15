@@ -4,7 +4,8 @@ import Observation
 @Observable
 final class HeroListViewModel {
     var heroes: [ResultHero] = []
-    var state: StateHeroList = .loading
+    var state: StateScreen = .loading
+    
     private let useCase: HeroesUseCaseProtocol
     
     init(useCase: HeroesUseCaseProtocol = HeroesUseCase()) {

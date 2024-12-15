@@ -8,7 +8,7 @@ final class DefaultSeriesRepository: SeriesRepositoryProtocol {
         self.network = network
     }
 
-    func getHeroSeries(characterId: String) async -> [Result]? {
+    func getHeroSeries(characterId: String) async -> [ResultSeries]? {
         return await network.fetchHeroSeries(characterId: characterId)
     }
 }
@@ -21,7 +21,7 @@ final class DefaultSeriesRepositoryMock: SeriesRepositoryProtocol {
         self.network = network
     }
 
-    func getHeroSeries(characterId: String) async -> [Result]? {
+    func getHeroSeries(characterId: String) async -> [ResultSeries]? {
         return await network.fetchHeroSeries(characterId: characterId)
     }
 }

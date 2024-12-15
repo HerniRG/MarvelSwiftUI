@@ -5,5 +5,5 @@ protocol SeriesRepositoryProtocol {
     /// Obtiene las series asociadas a un héroe específico desde la API de Marvel
     /// - Parameter characterId: El identificador del héroe.
     /// - Returns: Una lista de series (`[Result]`) o `nil` si ocurre un error.
-    func getHeroSeries(characterId: String) async -> [Result]?
+    func getHeroSeries(characterId: String) async -> [ResultSeries]?
 }

@@ -17,7 +17,7 @@ protocol SeriesUseCaseProtocol {
     /// Obtiene las series asociadas a un héroe
     /// - Parameter characterId: El identificador del héroe.
     /// - Returns: Una lista de series (`[Result]`) o `nil` en caso de error.
-    func getHeroSeries(characterId: String) async -> [Result]?
+    func getHeroSeries(characterId: String) async -> [ResultSeries]?
 }
 
 /// Implementación del caso de uso de series
@@ -28,7 +28,7 @@ final class SeriesUseCase: SeriesUseCaseProtocol {
         self.repo = repo
     }
 
-    func getHeroSeries(characterId: String) async -> [Result]? {
+    func getHeroSeries(characterId: String) async -> [ResultSeries]? {
         return await repo.getHeroSeries(characterId: characterId)
     }
 }
@@ -40,7 +40,7 @@ final class SeriesUseCaseMock: SeriesUseCaseProtocol {
         self.repo = repo
     }
 
-    func getHeroSeries(characterId: String) async -> [Result]? {
+    func getHeroSeries(characterId: String) async -> [ResultSeries]? {
         return await repo.getHeroSeries(characterId: characterId)
     }
 }

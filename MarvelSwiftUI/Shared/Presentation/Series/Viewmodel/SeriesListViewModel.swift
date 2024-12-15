@@ -1,39 +1,30 @@
 import Foundation
-import Combine
 
 @Observable
 final class SeriesListViewModel {
-    var series: [Result] = []
-    var isLoading: Bool = false
-    var errorMessage: String?
+    var series: [ResultSeries] = [] // Datos observables
+    var state: StateScreen = .loading // Estado de la pantalla
+    
+    @ObservationIgnored
+    private var useCase: SeriesUseCaseProtocol // No observable
 
-    private let useCase: SeriesUseCaseProtocol
-
+    // Inicializador
     init(useCase: SeriesUseCaseProtocol = SeriesUseCase()) {
         self.useCase = useCase
     }
 
+    // Método para cargar las series
     @MainActor
-    func fetchSeries(for characterId: String) {
-        guard !isLoading else { return } // Evita múltiples cargas simultáneas
-        isLoading = true
-        errorMessage = nil
-
-        Task {
-            do {
-                if let response = await useCase.getHeroSeries(characterId: characterId) {
-                    if response.isEmpty {
-                        errorMessage = "No series found for this hero."
-                        NSLog("Error: La lista de series está vacía.")
-                    } else {
-                        series = response
-                    }
-                } else {
-                    errorMessage = "Failed to load series: Response is nil."
-                    NSLog("Error: El caso de uso devolvió nil.")
-                }
-            }
-            isLoading = false
+    func fetchSeries(for characterId: String) async {
+        guard state == .loading else { return }
+        
+        let result = await useCase.getHeroSeries(characterId: characterId)
+        
+        if let result = result {
+            series = result
+            state = .loaded
+        } else {
+            state = .error("Failed to load series for this hero.")
         }
     }
 }
