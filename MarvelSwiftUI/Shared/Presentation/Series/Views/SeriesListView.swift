@@ -9,41 +9,41 @@ struct SeriesListView: View {
         self.viewModel = viewmodel
     }
     
-    
     var body: some View {
-        NavigationView {
-            Group {
-                switch viewModel.state {
-                case .loading:
-                    LoadingView()
-                case .loaded:
-                    ScrollView {
-                        if viewModel.series.count == 0 {
+        Group {
+            switch viewModel.state {
+            case .loading:
+                LoadingView()
+                    .transition(.opacity) // Suaviza la transición
+            case .loaded:
+                ScrollView {
+                    VStack(spacing: 20) { // Cambiado de LazyVStack a VStack
+                        if viewModel.series.isEmpty {
                             Text("No series available for this hero.")
                                 .font(.headline)
                                 .foregroundColor(.gray)
                                 .padding()
                         } else {
-                            LazyVStack(spacing: 20) {
-                                ForEach(viewModel.series, id: \.id) { serie in
-                                    SeriesRow(series: serie)
-                                }
+                            ForEach(viewModel.series, id: \.id) { serie in
+                                SeriesRow(series: serie)
                             }
-                            .padding(.horizontal)
                         }
                     }
-                    .navigationTitle("Hero Series")
-                case .error(let message):
-                    ErrorView(message: message)
+                    .padding(.horizontal)
                 }
-            }
-            .onAppear {
-                Task {
-                    await viewModel.fetchSeries(for: characterId)
-                }
+                .transition(.opacity)
+            case .error(let message):
+                ErrorView(message: message)
+                    .transition(.opacity)
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .animation(.easeInOut, value: viewModel.state) // Aplica animación al cambiar de estado
+        .navigationTitle("Hero Series") // Título consistente para todas las pantallas
+        .onAppear {
+            Task {
+                await viewModel.fetchSeries(for: characterId)
+            }
+        }
     }
 }
 

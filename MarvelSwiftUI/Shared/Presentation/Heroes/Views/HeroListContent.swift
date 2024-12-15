@@ -6,7 +6,7 @@ struct HeroListContent: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVStack(spacing: 12) {
+                VStack(spacing: 12) { // Cambiado de LazyVStack a VStack
                     ForEach(viewModel.heroes, id: \.id) { hero in
                         NavigationLink(destination: SeriesListView(characterId: "\(hero.id)")) {
                             HeroRow(hero: hero)
