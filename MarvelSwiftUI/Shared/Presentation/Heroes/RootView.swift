@@ -34,9 +34,7 @@ struct RootView: View {
 
 #Preview {
     let vm = HeroListViewModel(useCase: HeroesUseCaseMock())
-    
-    
     RootView()
-        .environment(vm) // Configuración del ViewModel en el entorno
+        .environment(vm)
 }
 

@@ -17,8 +17,12 @@ final class HeroListViewModel {
     
     @MainActor
     func fetchHeroes() async {
-        guard state == .loading else { return }
+        // Permitir que se reintente incluso si el estado es .error
+        guard state == .loading || state == .error("No heroes found.") else { return }
         
+        // Cambiar el estado a cargando para iniciar la operación
+        state = .loading
+
         let result = await useCase.getAllHeroes()
         if let result = result {
             heroes = result
@@ -26,6 +30,5 @@ final class HeroListViewModel {
         } else {
             state = .error("No heroes found.")
         }
-        
     }
 }

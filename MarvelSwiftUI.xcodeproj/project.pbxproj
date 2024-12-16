@@ -53,6 +53,8 @@
 			membershipExceptions = (
 				Assets.xcassets,
 				Info.plist,
+				Shared/Presentation/Resources/Animations/error.json,
+				Shared/Presentation/Resources/Animations/spider.json,
 			);
 			target = 66619CF92D009DB1008535F2 /* MarvelWatch Watch App */;
 		};
