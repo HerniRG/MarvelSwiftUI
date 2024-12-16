@@ -2,7 +2,7 @@ import SwiftUI
 
 struct HeroRowCompact: View {
     let hero: ResultHero
-
+    
     var body: some View {
         VStack(spacing: 8) {
             ZStack(alignment: .bottom) {
@@ -29,7 +29,7 @@ struct HeroRowCompact: View {
                     }
                 }
                 .cornerRadius(10)
-
+                
                 Text(hero.name)
                     .font(.headline)
                     .foregroundColor(.white)
@@ -38,7 +38,7 @@ struct HeroRowCompact: View {
                     .clipShape(Capsule())
                     .padding(8)
             }
-
+            
             Label("\(hero.comics.available) Comics", systemImage: "book.fill")
                 .font(.caption)
                 .foregroundColor(.blue)
@@ -51,7 +51,7 @@ struct HeroRowCompact: View {
                                 .stroke(Color.blue.opacity(0.5), lineWidth: 0.5)
                         )
                 )
-
+            
             Label("\(hero.series.available) Series", systemImage: "film.fill")
                 .font(.caption)
                 .foregroundColor(.green)
@@ -96,8 +96,7 @@ struct HeroRowCompact_Previews: PreviewProvider {
             stories: StoriesHero(available: 5, collectionURI: "", items: [], returned: 0),
             events: ComicsHero(available: 1, collectionURI: "", items: [], returned: 0),
             urls: []
-        ))
-        .previewLayout(.sizeThatFits)
-        .padding()
+        )
+        )
     }
 }

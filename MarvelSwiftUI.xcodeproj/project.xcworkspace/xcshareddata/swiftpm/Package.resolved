@@ -1,5 +1,5 @@
 {
-  "originHash" : "0a79f2009ea5ba6a9e7c2c6471d05458a7ac9a981d2fd7ab914f1eb741af1ea1",
+  "originHash" : "e10c442895457a5795aa4886d2aecad16f7be24e95494f1f18dadd9d747db2cb",
   "pins" : [
     {
       "identity" : "lottie-ios",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "fe4c6fe3a0aa66cdeb51d549623c82ca9704b9a5",
         "version" : "4.5.0"
+      }
+    },
+    {
+      "identity" : "viewinspector",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nalexn/ViewInspector",
+      "state" : {
+        "revision" : "788e7879d38a839c4e348ab0762dcc0364e646a2",
+        "version" : "0.10.1"
       }
     }
   ],

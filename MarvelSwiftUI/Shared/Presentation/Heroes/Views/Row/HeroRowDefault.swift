@@ -112,7 +112,5 @@ struct HeroRowDefault_Previews: PreviewProvider {
             events: ComicsHero(available: 1, collectionURI: "", items: [], returned: 0),
             urls: []
         ))
-        .previewLayout(.sizeThatFits)
-        .padding()
     }
 }
