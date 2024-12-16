@@ -5,19 +5,35 @@ struct HeroListContent: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 12) { // Cambiado de LazyVStack a VStack
-                    ForEach(viewModel.heroes, id: \.id) { hero in
-                        NavigationLink(destination: SeriesListView(characterId: "\(hero.id)")) {
-                            HeroRow(hero: hero)
-                        }
-                    }
-                }
-                .padding(.horizontal)
+            content
                 .navigationTitle("Marvel Heroes")
-            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    @ViewBuilder
+    private var content: some View {
+#if os(watchOS)
+        // Usar List para watchOS
+        List(viewModel.heroes, id: \.id) { hero in
+            NavigationLink(destination: SeriesListView(characterId: "\(hero.id)")) {
+                HeroRow(hero: hero)
+            }
+            .listRowBackground(Color.clear)
+        }
+#else
+        // Usar ScrollView para iOS
+        ScrollView {
+            VStack(spacing: 12) {
+                ForEach(viewModel.heroes, id: \.id) { hero in
+                    NavigationLink(destination: SeriesListView(characterId: "\(hero.id)")) {
+                        HeroRow(hero: hero)
+                    }
+                }
+            }
+            .padding(.horizontal)
+        }
+#endif
     }
 }
 
