@@ -51,28 +51,66 @@ struct MarvelSwiftUIPresentationTests {
         
         // MARK: - Tests
         
-        @Test("Series Row View")
+        @Test("Series Row Default View")
         @MainActor
-        func seriesRowViewTest() throws {
-            let view = SeriesRow(series: Self.mockSeries)
+        func seriesRowDefaultViewTest() throws {
+            let view = SeriesRowDefault(series: Self.mockSeries)
             let inspected = try view.inspect()
             
-            // Verificamos el título
+            // Verificar título de la serie
             let title = try inspected.find(viewWithAccessibilityIdentifier: "SeriesTitle")
-            #expect(try title.text().string() == Self.mockSeries.title, "El título no coincide")
+            #expect(try title.text().string() == Self.mockSeries.title, "El título de la serie no coincide")
             
-            // Verificamos los años
+            // Verificar imagen
+            let image = try inspected.find(viewWithAccessibilityIdentifier: "ImageContainer")
+            #expect(image != nil, "La imagen no se renderizó correctamente")
+            
+            // Verificar años
             let years = try inspected.find(viewWithAccessibilityIdentifier: "SeriesYears")
-            #expect(try years.text().string() == "\(Self.mockSeries.startYear)-\(Self.mockSeries.endYear)", "Los años no coinciden")
+            #expect(try years.text().string().contains("\(Self.mockSeries.startYear)-\(Self.mockSeries.endYear)"), "Los años no coinciden")
             
-            // Verificamos la disponibilidad de comics
+            // Verificar rating
+            if let rating = Self.mockSeries.rating, !rating.isEmpty, rating.lowercased() != "none" {
+                let ratingView = try inspected.find(viewWithAccessibilityIdentifier: "SeriesRating")
+                #expect(try ratingView.text().string() == rating, "El rating no coincide")
+            }
+            
+            // Verificar cómics
             let comics = try inspected.find(viewWithAccessibilityIdentifier: "ComicsAvailable")
-            #expect(try comics.text().string().contains("\(Self.mockSeries.comics.available) Comics"), "Los comics no coinciden")
+            let comicsText = try comics.text().string()
+            #expect(comicsText.contains("\(Self.mockSeries.comics.available) Comics"), "El número de cómics no coincide")
             
-            // Verificamos la disponibilidad de eventos
+            // Verificar eventos
             let events = try inspected.find(viewWithAccessibilityIdentifier: "EventsAvailable")
-            #expect(try events.text().string().contains("\(Self.mockSeries.events.available) Eventos"), "Los eventos no coinciden")
+            let eventsText = try events.text().string()
+            #expect(eventsText.contains("\(Self.mockSeries.events.available) Eventos"), "El número de eventos no coincide")
         }
+        
+        @Test("Series Row Compact View")
+        @MainActor
+        func seriesRowCompactViewTest() throws {
+            let view = SeriesRowCompact(series: Self.mockSeries)
+            let inspected = try view.inspect()
+            
+            // Verificar título de la serie
+            let title = try inspected.find(viewWithAccessibilityIdentifier: "SeriesTitle")
+            #expect(try title.text().string() == Self.mockSeries.title, "El título de la serie no coincide")
+            
+            // Verificar imagen
+            let image = try inspected.find(viewWithAccessibilityIdentifier: "SeriesImage")
+            #expect(image != nil, "La imagen no se renderizó correctamente")
+            
+            // Verificar cómics
+            let comics = try inspected.find(viewWithAccessibilityIdentifier: "SeriesComicsAvailable")
+            let comicsText = try comics.text().string()
+            #expect(comicsText.contains("\(Self.mockSeries.comics.available) Comics"), "El número de cómics no coincide")
+            
+            // Verificar eventos
+            let events = try inspected.find(viewWithAccessibilityIdentifier: "SeriesEventsAvailable")
+            let eventsText = try events.text().string()
+            #expect(eventsText.contains("\(Self.mockSeries.events.available) Eventos"), "El número de eventos no coincide")
+        }
+        
         
         @Test("Hero Row Default View")
         @MainActor
