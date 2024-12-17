@@ -1,11 +1,3 @@
-//
-//  RootView.swift
-//  MarvelSwiftUI
-//
-//  Created by Hernán Rodríguez on 8/12/24.
-//
-
-
 import SwiftUI
 
 struct RootView: View {

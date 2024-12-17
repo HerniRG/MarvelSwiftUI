@@ -5,91 +5,110 @@ struct HeroRowDefault: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // Imagen del héroe con transiciones y estados
-            ZStack(alignment: .bottomLeading) {
-                AsyncImage(url: URL(string: "\(hero.thumbnail.path).\(hero.thumbnail.thumbnailExtension.rawValue)")) { phase in
-                    switch phase {
-                    case .empty:
-                        ZStack {
-                            Color.gray.opacity(0.2)
-                                .frame(height: 200) // Aumenta la altura aquí
-                                .cornerRadius(10) // Redondeo completo
-                            ProgressView()
-                        }
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(height: 200) // Aumenta la altura aquí
-                            .clipped()
-                            .transition(.opacity) // Transición suave
-                            .cornerRadius(10) // Redondeo completo
-                    case .failure:
-                        ZStack {
-                            Color.gray.opacity(0.2)
-                                .frame(height: 200) // Aumenta la altura aquí
-                                .cornerRadius(10) // Redondeo completo
-                            Text("Image not available")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    @unknown default:
-                        Color.gray.frame(height: 200) // Aumenta la altura aquí
-                            .cornerRadius(10) // Redondeo completo
-                    }
-                }
-                
-                // Nombre del héroe
-                Text(hero.name)
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding(8)
-                    .background(Color.black.opacity(0.7))
-                    .clipShape(Capsule())
-                    .padding(8)
-            }
-            
-            // Métricas del héroe
-            HStack {
-                Label("\(hero.comics.available) Comics", systemImage: "book.fill")
-                    .font(.caption2)
-                    .foregroundColor(.blue)
-                    .padding(4)
-                    .background(
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.blue.opacity(0.1))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 4)
-                                    .stroke(Color.blue.opacity(0.5), lineWidth: 0.5)
-                            )
-                    )
-                Spacer()
-                Label("\(hero.series.available) Series", systemImage: "film.fill")
-                    .font(.caption2)
-                    .foregroundColor(.green)
-                    .padding(4)
-                    .background(
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.green.opacity(0.1))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 4)
-                                    .stroke(Color.green.opacity(0.5), lineWidth: 0.5)
-                            )
-                    )
-            }
-            .padding()
+            HeroRowImageHeader(hero: hero)
+            HeroRowMetrics(hero: hero)
         }
-        .frame(maxWidth: .infinity) // Ancho completo
+        .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(.background)
-                .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4) // Sombra
+                .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.gray.opacity(0.9), lineWidth: 0.3) // Borde fino gris
+                .stroke(Color.gray.opacity(0.9), lineWidth: 0.3)
         )
-        .padding([.horizontal, .top]) // Añade espacio exterior
+        .padding([.horizontal, .top])
+    }
+}
+
+// MARK: - Subviews
+
+private struct HeroRowImageHeader: View {
+    let hero: ResultHero
+    
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            AsyncImage(url: URL(string: "\(hero.thumbnail.path).\(hero.thumbnail.thumbnailExtension.rawValue)")) { phase in
+                switch phase {
+                case .empty:
+                    ZStack {
+                        Color.gray.opacity(0.2)
+                            .frame(height: 200)
+                            .cornerRadius(10)
+                        ProgressView()
+                    }
+                    .accessibilityIdentifier("ImageLoading")
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 200)
+                        .clipped()
+                        .cornerRadius(10)
+                        .accessibilityIdentifier("HeroImage")
+                case .failure:
+                    ZStack {
+                        Color.gray.opacity(0.2)
+                            .frame(height: 200)
+                            .cornerRadius(10)
+                        Text("Image not available")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .accessibilityIdentifier("ImageErrorText")
+                    }
+                @unknown default:
+                    Color.gray.frame(height: 200)
+                        .cornerRadius(10)
+                }
+            }
+            
+            Text(hero.name)
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding(8)
+                .background(Color.black.opacity(0.7))
+                .clipShape(Capsule())
+                .padding(8)
+                .accessibilityIdentifier("HeroName")
+        }
+    }
+}
+
+private struct HeroRowMetrics: View {
+    let hero: ResultHero
+    
+    var body: some View {
+        HStack {
+            Label("\(hero.comics.available) Comics", systemImage: "book.fill")
+                .font(.caption2)
+                .foregroundColor(.blue)
+                .padding(4)
+                .background(
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.blue.opacity(0.1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(Color.blue.opacity(0.5), lineWidth: 0.5)
+                        )
+                )
+                .accessibilityIdentifier("HeroComicsAvailable")
+            Spacer()
+            Label("\(hero.series.available) Series", systemImage: "film.fill")
+                .font(.caption2)
+                .foregroundColor(.green)
+                .padding(4)
+                .background(
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.green.opacity(0.1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(Color.green.opacity(0.5), lineWidth: 0.5)
+                        )
+                )
+                .accessibilityIdentifier("HeroSeriesAvailable")
+        }
+        .padding()
     }
 }
 

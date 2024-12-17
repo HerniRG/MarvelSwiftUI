@@ -14,18 +14,38 @@ struct HeroListContent: View {
     @ViewBuilder
     private var content: some View {
 #if os(watchOS)
-        // Usar List para watchOS
-        List(viewModel.heroes, id: \.id) { hero in
+        HeroListContentWatchView(heroes: viewModel.heroes)
+#else
+        HeroListContentiOSView(heroes: viewModel.heroes)
+#endif
+    }
+}
+
+// MARK: - Subviews
+
+#if os(watchOS)
+/// Vista específica para watchOS, usando una List
+private struct HeroListContentWatchView: View {
+    let heroes: [ResultHero]
+    
+    var body: some View {
+        List(heroes, id: \.id) { hero in
             NavigationLink(destination: SeriesListView(characterId: "\(hero.id)")) {
                 HeroRow(hero: hero)
             }
             .listRowBackground(Color.clear)
         }
+    }
+}
 #else
-        // Usar ScrollView para iOS
+/// Vista específica para iOS, usando ScrollView y VStack
+private struct HeroListContentiOSView: View {
+    let heroes: [ResultHero]
+    
+    var body: some View {
         ScrollView {
             VStack(spacing: 12) {
-                ForEach(viewModel.heroes, id: \.id) { hero in
+                ForEach(heroes, id: \.id) { hero in
                     NavigationLink(destination: SeriesListView(characterId: "\(hero.id)")) {
                         HeroRow(hero: hero)
                     }
@@ -33,9 +53,11 @@ struct HeroListContent: View {
             }
             .padding(.horizontal)
         }
-#endif
     }
 }
+#endif
+
+// MARK: - Previews
 
 struct HeroListContent_Previews: PreviewProvider {
     static var previews: some View {
