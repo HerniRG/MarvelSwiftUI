@@ -4,23 +4,22 @@ struct RootView: View {
     @Environment(HeroListViewModel.self) var viewModel
     
     var body: some View {
-        
-        switch viewModel.state {
-        case .loading:
-            withAnimation {
+        ZStack {
+            switch viewModel.state {
+            case .loading:
                 LoadingView()
-            }
-            
-        case .loaded:
-            withAnimation {
+                    .transition(CustomTransitions.loadingTransition())
+                
+            case .loaded:
                 HeroListContent()
-            }
-            
-        case .error(message: let message):
-            withAnimation {
+                    .transition(CustomTransitions.contentTransition())
+                
+            case .error(message: let message):
                 ErrorView(message: message)
+                    .transition(CustomTransitions.errorTransition())
             }
         }
+        .animation(.easeInOut(duration: 0.6), value: viewModel.state)
     }
 }
 

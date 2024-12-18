@@ -10,19 +10,19 @@ struct SeriesListView: View {
     }
     
     var body: some View {
-        Group {
+        ZStack {
             switch viewModel.state {
             case .loading:
                 SeriesLoadingView()
-                    .transition(.opacity)
+                    .transition(CustomTransitions.loadingTransition())
                     
             case .loaded:
                 SeriesContentView(series: viewModel.series)
-                    .transition(.opacity)
+                    .transition(CustomTransitions.contentTransition())
                     
             case .error(let message):
                 SeriesErrorView(message: message)
-                    .transition(.opacity)
+                    .transition(CustomTransitions.errorTransition())
             }
         }
         .animation(.easeInOut, value: viewModel.state)
@@ -49,7 +49,7 @@ private struct SeriesErrorView: View {
     let message: String
     
     var body: some View {
-        ErrorView(message: message)
+        ErrorView(message: message, series: true)
     }
 }
 

@@ -7,11 +7,11 @@ import Lottie
 struct LottieErrorView: View {
     @Environment(HeroListViewModel.self) var viewmodel
     let message: String
-    let animationName: String
+    let series: Bool
     
     var body: some View {
         VStack {
-            if let path = Bundle.main.path(forResource: animationName, ofType: "json") {
+            if let path = Bundle.main.path(forResource: "error", ofType: "json") {
                 LottieView(animation: .filepath(path))
                     .playing()
                     .frame(width: 200, height: 200)
@@ -20,24 +20,28 @@ struct LottieErrorView: View {
                 .foregroundColor(.red)
                 .multilineTextAlignment(.center)
                 .padding(.top, 10)
-            Button("Retry") {
-                Task {
-                    await viewmodel.fetchHeroes()
+            
+            if !series { // Muestra el botón Retry solo si `series` es false
+                Button("Retry") {
+                    Task {
+                        await viewmodel.fetchHeroes()
+                    }
                 }
+                .buttonStyle(BorderedButtonStyle())
+                .padding()
             }
-            .buttonStyle(BorderedButtonStyle())
-            .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .edgesIgnoringSafeArea(.all)
     }
 }
 
+
 // MARK: - Preview
 struct LottieErrorView_Previews: PreviewProvider {
     static var previews: some View {
         let mockViewModel = HeroListViewModel(useCase: HeroesUseCaseMock())
-        LottieErrorView(message: "Something went wrong", animationName: "error")
+        LottieErrorView(message: "Something went wrong", series: false)
             .environment(mockViewModel)
     }
 }

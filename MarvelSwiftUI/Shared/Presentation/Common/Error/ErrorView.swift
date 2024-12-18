@@ -2,16 +2,18 @@ import SwiftUI
 
 struct ErrorView: View {
     private let message: String
+    private let series: Bool
     
-    init(message: String) {
+    init(message: String, series: Bool = false) { 
         self.message = message
+        self.series = series
     }
     
     var body: some View {
         #if os(watchOS)
-        WatchErrorView(message: message) // Error básico para watchOS
+        WatchErrorView(message: message, series: series)
         #else
-        LottieErrorView(message: message, animationName: "error") // Lottie para iOS/macOS
+        LottieErrorView(message: message, series: series)
         #endif
     }
 }
