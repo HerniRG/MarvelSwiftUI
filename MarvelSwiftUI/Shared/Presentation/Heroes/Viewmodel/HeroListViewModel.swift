@@ -1,11 +1,11 @@
 import Foundation
-import Observation
 
 @Observable
 final class HeroListViewModel {
     var heroes: [ResultHero] = []
     var state: StateScreen = .loading
     
+    @ObservationIgnored
     private let useCase: HeroesUseCaseProtocol
     
     init(useCase: HeroesUseCaseProtocol = HeroesUseCase()) {

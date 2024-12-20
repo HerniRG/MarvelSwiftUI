@@ -2,18 +2,16 @@ import Foundation
 
 @Observable
 final class SeriesListViewModel {
-    var series: [ResultSeries] = [] // Datos observables
-    var state: StateScreen = .loading // Estado de la pantalla
+    var series: [ResultSeries] = []
+    var state: StateScreen = .loading
     
     @ObservationIgnored
-    private var useCase: SeriesUseCaseProtocol // No observable
+    private var useCase: SeriesUseCaseProtocol
 
-    // Inicializador
     init(useCase: SeriesUseCaseProtocol = SeriesUseCase()) {
         self.useCase = useCase
     }
 
-    // Método para cargar las series
     @MainActor
     func fetchSeries(for characterId: String) async {
         guard state == .loading else { return }
