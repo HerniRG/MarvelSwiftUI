@@ -1,11 +1,3 @@
-//
-//  HttpMethods.swift
-//  MarvelSwiftUI
-//
-//  Created by Hernán Rodríguez on 6/12/24.
-//
-
-
 import Foundation
 import CryptoKit
 

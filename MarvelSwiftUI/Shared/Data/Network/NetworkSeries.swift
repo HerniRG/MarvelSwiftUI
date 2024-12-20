@@ -5,7 +5,7 @@ protocol NetworkSeriesProtocol {
     func fetchHeroSeries(characterId: String) async -> [ResultSeries]?
 }
 
-/// Implementación real de `NetworkSeriesProtocol` para manejar solicitudes de series
+/// Implementación real de NetworkSeriesProtocol para manejar solicitudes de series
 final class NetworkSeries: NetworkSeriesProtocol {
     func fetchHeroSeries(characterId: String) async -> [ResultSeries]? {
         let urlCad = "\(ConstantsApp.CONS_API_URL)\(Endpoints.heroSeries.rawValue)"
@@ -55,7 +55,7 @@ final class NetworkSeries: NetworkSeriesProtocol {
                     } else if dateString == "-0001-11-30T00:00:00-0500" {
                         return Date.distantPast // Manejo de fechas inválidas
                     } else {
-                        NSLog("Formato de fecha desconocido: \(dateString), asignando `Date.distantPast`.")
+                        NSLog("Formato de fecha desconocido: \(dateString), asignando Date.distantPast.")
                         return Date.distantPast
                     }
                 }
@@ -76,7 +76,7 @@ final class NetworkSeries: NetworkSeriesProtocol {
 }
 
 // Mock para pruebas
-/// Mock de `NetworkSeriesProtocol` para pruebas sin depender de una conexión de red
+/// Mock de NetworkSeriesProtocol para pruebas sin depender de una conexión de red
 final class NetworkSeriesMock: NetworkSeriesProtocol {
     static let mockSeries: [ResultSeries] = [
         ResultSeries(

@@ -58,7 +58,7 @@ final class NetworkHeroes: NetworkHeroesProtocol {
 }
 
 // Mock para pruebas
-/// Mock de `NetworkHeroes` para pruebas sin depender de una conexión de red.
+/// Mock de NetworkHeroes para pruebas sin depender de una conexión de red.
 final class NetworkHeroesMock: NetworkHeroesProtocol {
     static let mockHeroes: [ResultHero] = (0..<100).map { index in
         ResultHero(
