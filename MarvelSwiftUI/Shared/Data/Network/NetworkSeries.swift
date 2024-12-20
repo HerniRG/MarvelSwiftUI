@@ -16,56 +16,35 @@ final class NetworkSeries: NetworkSeriesProtocol {
             return nil
         }
         
-        // Añadir los parámetros de autenticación
-        urlComponents.queryItems = HttpMethods.MarvelAuth.authParameters().map {
-            URLQueryItem(name: $0.key, value: $0.value)
-        }
+        // Añadir los parámetros de autenticación usando valores fijos
+        urlComponents.queryItems = [
+            URLQueryItem(name: "apikey", value: ConstantsApp.CONS_API_PUBLIC_KEY),
+            URLQueryItem(name: "ts", value: ConstantsApp.CONS_API_TS),
+            URLQueryItem(name: "hash", value: ConstantsApp.CONS_API_HASH)
+        ]
         
         guard let url = urlComponents.url else {
             NSLog("Error: URLComponents no pudo generar una URL válida.")
             return nil
         }
-        
-        NSLog("URL final: \(url.absoluteString)")
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = HttpMethods.get
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
             
-            if let resp = response as? HTTPURLResponse, resp.statusCode == HttpResponseCodes.success {
-                // Log del JSON recibido (opcional)
-                if let jsonString = String(data: data, encoding: .utf8) {
-                    NSLog("JSON recibido: \(jsonString)")
-                }
-                
-                // Configurar decodificador
-                let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .custom { decoder -> Date in
-                    let container = try decoder.singleValueContainer()
-                    let dateString = try container.decode(String.self)
-                    
-                    let formatter = DateFormatter()
-                    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ" // Formato esperado
-                    formatter.locale = Locale(identifier: "en_US_POSIX")
-                    
-                    if let date = formatter.date(from: dateString) {
-                        return date
-                    } else if dateString == "-0001-11-30T00:00:00-0500" {
-                        return Date.distantPast // Manejo de fechas inválidas
-                    } else {
-                        NSLog("Formato de fecha desconocido: \(dateString), asignando Date.distantPast.")
-                        return Date.distantPast
-                    }
-                }
-                
-                // Decodificar JSON
+            guard let resp = response as? HTTPURLResponse else {
+                NSLog("Error HTTP: No se pudo obtener el código de estado.")
+                return nil
+            }
+            
+            if resp.statusCode == HttpResponseCodes.success {
+                let decoder = JSONDecoder.marvelDateDecoder()
                 let seriesResponse = try decoder.decode(SeriesResponse.self, from: data)
-                NSLog("Series obtenidas: \(seriesResponse.data.results.count)")
                 return seriesResponse.data.results
             } else {
-                NSLog("Error HTTP: Código \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                NSLog("Error HTTP: Código \(resp.statusCode)")
             }
         } catch {
             NSLog("Error al obtener las series: \(error.localizedDescription)")
@@ -76,7 +55,6 @@ final class NetworkSeries: NetworkSeriesProtocol {
 }
 
 // Mock para pruebas
-/// Mock de NetworkSeriesProtocol para pruebas sin depender de una conexión de red
 final class NetworkSeriesMock: NetworkSeriesProtocol {
     static let mockSeries: [ResultSeries] = [
         ResultSeries(
@@ -134,8 +112,7 @@ final class NetworkSeriesMock: NetworkSeriesProtocol {
     ]
     
     func fetchHeroSeries(characterId: String) async -> [ResultSeries]? {
-        try? await Task.sleep(nanoseconds: 2_000_000_000) // Simular retraso de 2s
-        NSLog("Mock use case called para characterId: \(characterId)")
+        try? await Task.sleep(nanoseconds: 2_000_000_000)
         return Self.mockSeries
     }
 }

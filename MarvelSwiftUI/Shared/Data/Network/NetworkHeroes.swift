@@ -14,17 +14,17 @@ final class NetworkHeroes: NetworkHeroesProtocol {
             return nil
         }
         
-        // Añadimos los parámetros de autenticación
-        urlComponents.queryItems = HttpMethods.MarvelAuth.authParameters().map {
-            URLQueryItem(name: $0.key, value: $0.value)
-        }
+        // Añadimos los parámetros de autenticación usando los valores fijos
+        urlComponents.queryItems = [
+            URLQueryItem(name: "apikey", value: ConstantsApp.CONS_API_PUBLIC_KEY),
+            URLQueryItem(name: "ts", value: ConstantsApp.CONS_API_TS),
+            URLQueryItem(name: "hash", value: ConstantsApp.CONS_API_HASH)
+        ]
         
         guard let url = urlComponents.url else {
             NSLog("Error: URLComponents no pudo generar una URL válida.")
             return nil
         }
-        
-        NSLog("URL final: \(url.absoluteString)")
 
         var request = URLRequest(url: url)
         request.httpMethod = HttpMethods.get
@@ -32,22 +32,17 @@ final class NetworkHeroes: NetworkHeroesProtocol {
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
             
-            if let resp = response as? HTTPURLResponse, resp.statusCode == HttpResponseCodes.success {
-                // Log del JSON recibido (opcional en producción)
-                if let jsonString = String(data: data, encoding: .utf8) {
-                    NSLog("JSON recibido: \(jsonString)")
-                }
-
-                // Configurar decodificador
-                let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .iso8601
-
-                // Decodificar JSON
+            guard let resp = response as? HTTPURLResponse else {
+                NSLog("Error HTTP: No se pudo obtener el código de estado.")
+                return nil
+            }
+            
+            if resp.statusCode == HttpResponseCodes.success {
+                let decoder = JSONDecoder.marvelDateDecoder()
                 let heroResponse = try decoder.decode(Heroe.self, from: data)
-                NSLog("Héroes obtenidos: \(heroResponse.data.results.count)")
                 return heroResponse.data.results
             } else {
-                NSLog("Error HTTP: Código \(response as? HTTPURLResponse)?.statusCode ?? 0")
+                NSLog("Error HTTP: Código \(resp.statusCode)")
             }
         } catch {
             NSLog("Error al obtener los héroes: \(error.localizedDescription)")
@@ -58,7 +53,6 @@ final class NetworkHeroes: NetworkHeroesProtocol {
 }
 
 // Mock para pruebas
-/// Mock de NetworkHeroes para pruebas sin depender de una conexión de red.
 final class NetworkHeroesMock: NetworkHeroesProtocol {
     static let mockHeroes: [ResultHero] = (0..<100).map { index in
         ResultHero(
@@ -80,8 +74,8 @@ final class NetworkHeroesMock: NetworkHeroesProtocol {
     }
 
     func fetchAllHeroes() async -> [ResultHero]? {
-        try? await Task.sleep(nanoseconds: 2_000_000_000) // Simular retraso de 2s
-        print("Mock use case called") // Log para confirmar ejecución
+        // Simular retraso de 2s sin logs
+        try? await Task.sleep(nanoseconds: 2_000_000_000)
         return Self.mockHeroes
     }
 }
