@@ -11,12 +11,12 @@ struct SeriesRowDefault: View {
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(.background)
+                .fill(AppColors.background) // Reemplazado con AppColors.background
         )
-        .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
+        .shadow(color: AppColors.shadow, radius: 10, x: 0, y: 4) // Usando AppColors.shadow
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.gray.opacity(0.9), lineWidth: 0.3)
+                .stroke(AppColors.border, lineWidth: 0.3) // Usando AppColors.border
         )
         .padding(.horizontal)
     }
@@ -32,7 +32,7 @@ private struct SeriesRowHeaderView: View {
                 switch phase {
                 case .empty:
                     ZStack {
-                        Color.gray.opacity(0.2)
+                        AppColors.secondaryText.opacity(0.2) // Reemplazado con AppColors.secondaryText.opacity(0.2)
                             .frame(height: 250)
                             .cornerRadius(10)
                             .accessibilityIdentifier("ImageLoading")
@@ -48,16 +48,16 @@ private struct SeriesRowHeaderView: View {
                         .accessibilityIdentifier("ImageLoaded")
                 case .failure:
                     ZStack {
-                        Color.gray.opacity(0.2)
+                        AppColors.secondaryText.opacity(0.2) // Reemplazado con AppColors.secondaryText.opacity(0.2)
                             .frame(height: 250)
                             .cornerRadius(10)
                         Text("Imagen no disponible")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(AppColors.secondaryText) // Reemplazado con AppColors.secondaryText
                             .accessibilityIdentifier("ImageFailed")
                     }
                 @unknown default:
-                    Color.gray.opacity(0.2)
+                    AppColors.secondaryText.opacity(0.2) // Reemplazado con AppColors.secondaryText.opacity(0.2)
                         .frame(height: 250)
                         .cornerRadius(10)
                 }
@@ -66,9 +66,9 @@ private struct SeriesRowHeaderView: View {
 
             Text(series.title)
                 .font(.headline)
-                .foregroundColor(.white)
+                .foregroundColor(AppColors.heroName) // Reemplazado con AppColors.heroName
                 .padding(8)
-                .background(Color.black.opacity(0.7))
+                .background(AppColors.overlayDark) // Reemplazado con AppColors.overlayDark
                 .clipShape(Capsule())
                 .padding(8)
                 .accessibilityIdentifier("SeriesTitle")
@@ -86,7 +86,7 @@ private struct SeriesRowMetricsView: View {
             HStack {
                 Text("\(series.startYear)-\(series.endYear)")
                     .font(.caption)
-                    .foregroundColor(.orange)
+                    .foregroundColor(AppColors.metricEvents) // Reemplazado con AppColors.metricEvents
                     .accessibilityIdentifier("SeriesYears")
 
                 Spacer()
@@ -94,7 +94,7 @@ private struct SeriesRowMetricsView: View {
                 if let rating = series.rating, !rating.isEmpty, rating.lowercased() != "none" {
                     Text(rating)
                         .font(.caption)
-                        .foregroundColor(.yellow)
+                        .foregroundColor(AppColors.warning) // Reemplazado con AppColors.warning
                         .accessibilityIdentifier("SeriesRating")
                 }
             }
@@ -102,14 +102,14 @@ private struct SeriesRowMetricsView: View {
             HStack {
                 Text("\(series.comics.available) Comics")
                     .font(.caption2)
-                    .foregroundColor(.blue)
+                    .foregroundColor(AppColors.metricComics) // Reemplazado con AppColors.metricComics
                     .padding(4)
                     .background(
                         RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.blue.opacity(0.1))
+                            .fill(AppColors.metricComics.opacity(0.1)) // Reemplazado con AppColors.metricComics.opacity(0.1)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 4)
-                                    .stroke(Color.blue.opacity(0.5), lineWidth: 0.5)
+                                    .stroke(AppColors.metricComics.opacity(0.5), lineWidth: 0.5) // Reemplazado con AppColors.metricComics.opacity(0.5)
                             )
                     )
                     .accessibilityIdentifier("ComicsAvailable")
@@ -118,14 +118,14 @@ private struct SeriesRowMetricsView: View {
 
                 Text("\(series.events.available) Eventos")
                     .font(.caption2)
-                    .foregroundColor(.green)
+                    .foregroundColor(AppColors.metricEvents) // Reemplazado con AppColors.metricEvents
                     .padding(4)
                     .background(
                         RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.green.opacity(0.1))
+                            .fill(AppColors.metricEvents.opacity(0.1)) // Reemplazado con AppColors.metricEvents.opacity(0.1)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 4)
-                                    .stroke(Color.green.opacity(0.5), lineWidth: 0.5)
+                                    .stroke(AppColors.metricEvents.opacity(0.5), lineWidth: 0.5) // Reemplazado con AppColors.metricEvents.opacity(0.5)
                             )
                     )
                     .accessibilityIdentifier("EventsAvailable")

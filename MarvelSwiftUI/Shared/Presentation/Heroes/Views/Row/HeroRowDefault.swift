@@ -11,12 +11,12 @@ struct HeroRowDefault: View {
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(.background)
-                .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
+                .fill(AppColors.background)
+                .shadow(color: AppColors.shadow, radius: 10, x: 0, y: 4) // Usando AppColors.shadow
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.gray.opacity(0.9), lineWidth: 0.3)
+                .stroke(AppColors.border, lineWidth: 0.3) // Usando AppColors.border
         )
         .padding([.horizontal, .top])
     }
@@ -33,7 +33,7 @@ private struct HeroRowImageHeader: View {
                 switch phase {
                 case .empty:
                     ZStack {
-                        Color.gray.opacity(0.2)
+                        AppColors.secondaryText.opacity(0.2) // Placeholder más sutil
                             .frame(height: 200)
                             .cornerRadius(10)
                         ProgressView()
@@ -49,25 +49,32 @@ private struct HeroRowImageHeader: View {
                         .accessibilityIdentifier("HeroImage")
                 case .failure:
                     ZStack {
-                        Color.gray.opacity(0.2)
+                        AppColors.error.opacity(0.3) // Indicador de error más claro
                             .frame(height: 200)
                             .cornerRadius(10)
                         Text("Image not available")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(AppColors.secondaryText)
                             .accessibilityIdentifier("ImageErrorText")
                     }
                 @unknown default:
-                    Color.gray.frame(height: 200)
-                        .cornerRadius(10)
+                    ZStack {
+                        AppColors.secondaryText.opacity(0.2)
+                            .frame(height: 200)
+                            .cornerRadius(10)
+                        Text("Image not available")
+                            .font(.caption)
+                            .foregroundColor(AppColors.secondaryText)
+                            .accessibilityIdentifier("ImageErrorText")
+                    }
                 }
             }
             
             Text(hero.name)
                 .font(.headline)
-                .foregroundColor(.white)
+                .foregroundColor(AppColors.heroName) // Usando AppColors.heroName
                 .padding(8)
-                .background(Color.black.opacity(0.7))
+                .background(AppColors.overlayDark)
                 .clipShape(Capsule())
                 .padding(8)
                 .accessibilityIdentifier("HeroName")
@@ -82,33 +89,33 @@ private struct HeroRowMetrics: View {
         HStack {
             Label("\(hero.comics.available) Comics", systemImage: "book.fill")
                 .font(.caption2)
-                .foregroundColor(.blue)
+                .foregroundColor(AppColors.metricComics)
                 .padding(4)
                 .background(
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.blue.opacity(0.1))
+                        .fill(AppColors.metricComics.opacity(0.1))
                         .overlay(
                             RoundedRectangle(cornerRadius: 4)
-                                .stroke(Color.blue.opacity(0.5), lineWidth: 0.5)
+                                .stroke(AppColors.metricComics.opacity(0.5), lineWidth: 0.5)
                         )
                 )
                 .accessibilityIdentifier("HeroComicsAvailable")
             Spacer()
             Label("\(hero.series.available) Series", systemImage: "film.fill")
                 .font(.caption2)
-                .foregroundColor(.green)
+                .foregroundColor(AppColors.metricSeries)
                 .padding(4)
                 .background(
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.green.opacity(0.1))
+                        .fill(AppColors.metricSeries.opacity(0.1))
                         .overlay(
                             RoundedRectangle(cornerRadius: 4)
-                                .stroke(Color.green.opacity(0.5), lineWidth: 0.5)
+                                .stroke(AppColors.metricSeries.opacity(0.5), lineWidth: 0.5)
                         )
                 )
                 .accessibilityIdentifier("HeroSeriesAvailable")
         }
-        .padding()
+        .padding() // Ajuste para mayor claridad
     }
 }
 

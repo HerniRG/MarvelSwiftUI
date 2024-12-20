@@ -10,10 +10,10 @@ struct WatchErrorView: View {
             Image(systemName: "xmark.circle.fill")
                 .resizable()
                 .frame(width: 40, height: 40)
-                .foregroundColor(.red)
+                .foregroundColor(AppColors.error)
             
             Text("Error: \(message)")
-                .foregroundColor(.red)
+                .foregroundColor(AppColors.error)
                 .multilineTextAlignment(.center)
                 .lineLimit(4)
                 .fixedSize(horizontal: false, vertical: true)

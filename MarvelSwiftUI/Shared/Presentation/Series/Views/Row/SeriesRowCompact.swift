@@ -6,18 +6,18 @@ struct SeriesRowCompact: View {
     var body: some View {
         VStack(spacing: 8) {
             compactImageView
-                .accessibilityIdentifier("SeriesImage") // Identificador para la imagen
+                .accessibilityIdentifier("SeriesImage")
             compactMetricsView
         }
         .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(.white.opacity(0.1))
-                .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
+                .fill(AppColors.cardBackground)
+                .shadow(color: AppColors.shadow, radius: 10, x: 0, y: 4)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.gray.opacity(0.9), lineWidth: 0.3)
+                .stroke(AppColors.border, lineWidth: 0.3)
         )
     }
     
@@ -27,11 +27,12 @@ struct SeriesRowCompact: View {
             switch phase {
             case .empty:
                 ZStack {
-                    Color.gray
+                    AppColors.secondaryText.opacity(0.2)
                         .frame(height: 100)
                         .cornerRadius(10)
                     ProgressView()
                 }
+                .accessibilityIdentifier("ImageLoading")
             case .success(let image):
                 image
                     .resizable()
@@ -39,10 +40,15 @@ struct SeriesRowCompact: View {
                     .frame(height: 100)
                     .clipped()
                     .cornerRadius(10)
+                    .accessibilityIdentifier("SeriesImageSuccess")
             case .failure:
-                Color.gray.frame(height: 100)
+                AppColors.secondaryText.opacity(0.2)
+                    .frame(height: 100)
+                    .cornerRadius(10)
             @unknown default:
-                Color.gray.frame(height: 100)
+                AppColors.secondaryText.opacity(0.2)
+                    .frame(height: 100)
+                    .cornerRadius(10)
             }
         }
     }
@@ -52,17 +58,17 @@ struct SeriesRowCompact: View {
         VStack(spacing: 4) {
             Text(series.title)
                 .font(.caption2)
-                .foregroundColor(.orange)
+                .foregroundColor(AppColors.metricSeries)
                 .accessibilityIdentifier("SeriesTitle")
-
+            
             Text("\(series.comics.available) Comics")
                 .font(.caption2)
-                .foregroundColor(.blue)
+                .foregroundColor(AppColors.metricComics)
                 .accessibilityIdentifier("SeriesComicsAvailable")
-
+            
             Text("\(series.events.available) Eventos")
                 .font(.caption2)
-                .foregroundColor(.green)
+                .foregroundColor(AppColors.metricEvents)
                 .accessibilityIdentifier("SeriesEventsAvailable")
         }
         .frame(maxWidth: .infinity)

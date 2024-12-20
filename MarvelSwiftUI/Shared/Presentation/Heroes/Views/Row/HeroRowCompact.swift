@@ -11,12 +11,12 @@ struct HeroRowCompact: View {
         .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(.white.opacity(0.1))
-                .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
+                .fill(AppColors.cardBackground)
+                .shadow(color: AppColors.overlayDark, radius: 10, x: 0, y: 4)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.gray.opacity(0.9), lineWidth: 0.3)
+                .stroke(AppColors.overlayDark.opacity(0.9), lineWidth: 0.3)
         )
     }
 }
@@ -32,7 +32,8 @@ private struct HeroRowCompactImage: View {
                 switch phase {
                 case .empty:
                     ZStack {
-                        Color.gray
+                        AppColors.overlayDark
+                            .opacity(0.3)
                             .frame(height: 100)
                             .cornerRadius(10)
                         ProgressView()
@@ -46,18 +47,20 @@ private struct HeroRowCompactImage: View {
                         .transition(.opacity)
                         .accessibilityIdentifier("HeroImage")
                 case .failure:
-                    Color.gray.frame(height: 100)
+                    AppColors.error.opacity(0.3)
+                        .frame(height: 100)
                 @unknown default:
-                    Color.gray.frame(height: 100)
+                    AppColors.text.opacity(0.3)
+                        .frame(height: 100)
                 }
             }
             .cornerRadius(10)
             
             Text(hero.name)
                 .font(.headline)
-                .foregroundColor(.white)
+                .foregroundColor(AppColors.heroName)
                 .padding(8)
-                .background(Color.black.opacity(0.7))
+                .background(AppColors.overlayDark)
                 .clipShape(Capsule())
                 .padding(8)
                 .accessibilityIdentifier("HeroName")
@@ -71,28 +74,28 @@ private struct HeroRowCompactMetrics: View {
     var body: some View {
         Label("\(hero.comics.available) Comics", systemImage: "book.fill")
             .font(.caption)
-            .foregroundColor(.blue)
+            .foregroundColor(AppColors.metricComics)
             .padding(4)
             .background(
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.blue.opacity(0.1))
+                    .fill(AppColors.metricComics.opacity(0.1))
                     .overlay(
                         RoundedRectangle(cornerRadius: 4)
-                            .stroke(Color.blue.opacity(0.5), lineWidth: 0.5)
+                            .stroke(AppColors.metricComics.opacity(0.5), lineWidth: 0.5)
                     )
             )
             .accessibilityIdentifier("HeroComicsAvailable")
         
         Label("\(hero.series.available) Series", systemImage: "film.fill")
             .font(.caption)
-            .foregroundColor(.green)
+            .foregroundColor(AppColors.metricSeries)
             .padding(4)
             .background(
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.green.opacity(0.1))
+                    .fill(AppColors.metricSeries.opacity(0.1))
                     .overlay(
                         RoundedRectangle(cornerRadius: 4)
-                            .stroke(Color.green.opacity(0.5), lineWidth: 0.5)
+                            .stroke(AppColors.metricSeries.opacity(0.5), lineWidth: 0.5)
                     )
             )
             .accessibilityIdentifier("HeroSeriesAvailable")

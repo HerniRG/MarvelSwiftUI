@@ -17,7 +17,7 @@ struct LottieErrorView: View {
                     .frame(width: 200, height: 200)
             }
             Text("Error: \(message)")
-                .foregroundColor(.red)
+                .foregroundColor(AppColors.error)
                 .multilineTextAlignment(.center)
                 .padding(.top, 10)
             
