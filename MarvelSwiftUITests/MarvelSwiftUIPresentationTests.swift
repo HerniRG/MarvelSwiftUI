@@ -83,7 +83,7 @@ struct MarvelSwiftUIPresentationTests {
             // Verificar eventos
             let events = try inspected.find(viewWithAccessibilityIdentifier: "EventsAvailable")
             let eventsText = try events.text().string()
-            #expect(eventsText.contains("\(Self.mockSeries.events.available) Eventos"), "El número de eventos no coincide")
+            #expect(eventsText.contains("\(Self.mockSeries.events.available) Events"), "El número de eventos no coincide")
         }
         
         @Test("Series Row Compact View")
@@ -108,7 +108,7 @@ struct MarvelSwiftUIPresentationTests {
             // Verificar eventos
             let events = try inspected.find(viewWithAccessibilityIdentifier: "SeriesEventsAvailable")
             let eventsText = try events.text().string()
-            #expect(eventsText.contains("\(Self.mockSeries.events.available) Eventos"), "El número de eventos no coincide")
+            #expect(eventsText.contains("\(Self.mockSeries.events.available) Events"), "El número de eventos no coincide")
         }
         
         
