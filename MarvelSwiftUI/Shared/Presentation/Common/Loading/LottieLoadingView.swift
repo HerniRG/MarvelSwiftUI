@@ -4,7 +4,9 @@ import Lottie
 #endif
 
 #if !os(watchOS)
+/// A view that displays a Lottie animation and a loading message.
 struct LottieLoadingView: View {
+    /// The name of the Lottie animation file.
     let animationName: String
     
     var body: some View {
@@ -25,6 +27,7 @@ struct LottieLoadingView: View {
 }
 
 // MARK: - Preview
+/// Preview provider for `LottieLoadingView`.
 struct LottieLoadingView_Previews: PreviewProvider {
     static var previews: some View {
         LottieLoadingView(animationName: "spider")

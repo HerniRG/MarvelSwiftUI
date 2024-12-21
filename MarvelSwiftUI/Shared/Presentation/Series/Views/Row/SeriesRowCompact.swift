@@ -1,6 +1,8 @@
 import SwiftUI
 
+/// A compact row view for displaying a series, optimized for smaller screens like watchOS.
 struct SeriesRowCompact: View {
+    /// The series to display in the row.
     let series: ResultSeries
     
     var body: some View {
@@ -21,6 +23,9 @@ struct SeriesRowCompact: View {
         )
     }
     
+    // MARK: - Subviews
+    
+    /// A view displaying the series image.
     @ViewBuilder
     private var compactImageView: some View {
         AsyncImage(url: URL(string: "\(series.thumbnail.path).\(series.thumbnail.thumbnailExtension)")) { phase in
@@ -45,14 +50,17 @@ struct SeriesRowCompact: View {
                 AppColors.secondaryText.opacity(0.2)
                     .frame(height: 100)
                     .cornerRadius(10)
+                    .accessibilityIdentifier("ImageError")
             @unknown default:
                 AppColors.secondaryText.opacity(0.2)
                     .frame(height: 100)
                     .cornerRadius(10)
+                    .accessibilityIdentifier("ImageError")
             }
         }
     }
     
+    /// A view displaying the series title and associated metrics.
     @ViewBuilder
     private var compactMetricsView: some View {
         VStack(spacing: 4) {
@@ -66,7 +74,7 @@ struct SeriesRowCompact: View {
                 .foregroundColor(AppColors.metricComics)
                 .accessibilityIdentifier("SeriesComicsAvailable")
             
-            Text("\(series.events.available) Eventos")
+            Text("\(series.events.available) Events")
                 .font(.caption2)
                 .foregroundColor(AppColors.metricEvents)
                 .accessibilityIdentifier("SeriesEventsAvailable")
@@ -77,6 +85,8 @@ struct SeriesRowCompact: View {
 }
 
 // MARK: - Preview
+
+/// Preview provider for `SeriesRowCompact`.
 struct SeriesRowCompact_Previews: PreviewProvider {
     static var previews: some View {
         SeriesRowCompact(series: SeriesRow_Previews.mockSeries)

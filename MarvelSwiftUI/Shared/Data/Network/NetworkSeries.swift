@@ -1,61 +1,66 @@
 import Foundation
 
-// Protocolo para manejar llamadas a la API de Marvel relacionadas con series de héroes
+/// Protocol for handling Marvel API calls related to hero series.
 protocol NetworkSeriesProtocol {
+    /// Fetches series for a specific hero.
+    /// - Parameter characterId: The unique identifier of the character.
+    /// - Returns: An array of `ResultSeries` if successful, otherwise `nil`.
     func fetchHeroSeries(characterId: String) async -> [ResultSeries]?
 }
 
-/// Implementación real de NetworkSeriesProtocol para manejar solicitudes de series
+/// Real implementation of `NetworkSeriesProtocol` for fetching hero series.
 final class NetworkSeries: NetworkSeriesProtocol {
+    /// Fetches series for a specific hero from the Marvel API.
+    /// - Parameter characterId: The unique identifier of the character.
+    /// - Returns: An array of `ResultSeries` if the request is successful, otherwise `nil`.
     func fetchHeroSeries(characterId: String) async -> [ResultSeries]? {
-        let urlCad = "\(ConstantsApp.CONS_API_URL)\(Endpoints.heroSeries.rawValue)"
+        let urlString = "\(ConstantsApp.CONS_API_URL)\(Endpoints.heroSeries.rawValue)"
             .replacingOccurrences(of: "{characterId}", with: characterId)
         
-        guard var urlComponents = URLComponents(string: urlCad) else {
-            NSLog("Error: URL inválida: \(urlCad)")
+        guard var urlComponents = URLComponents(string: urlString) else {
+            NSLog("Invalid URL: \(urlString)")
             return nil
         }
         
-        // Añadir los parámetros de autenticación usando valores fijos
-        urlComponents.queryItems = [
-            URLQueryItem(name: "apikey", value: ConstantsApp.CONS_API_PUBLIC_KEY),
-            URLQueryItem(name: "ts", value: ConstantsApp.CONS_API_TS),
-            URLQueryItem(name: "hash", value: ConstantsApp.CONS_API_HASH)
-        ]
+        // Add authentication parameters
+        urlComponents.queryItems = HTTPMethods.MarvelAuth.authParameters().map {
+            URLQueryItem(name: $0.key, value: $0.value)
+        }
         
         guard let url = urlComponents.url else {
-            NSLog("Error: URLComponents no pudo generar una URL válida.")
+            NSLog("Failed to generate valid URL from URLComponents.")
             return nil
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = HttpMethods.get
+        request.httpMethod = HTTPMethods.get
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
             
-            guard let resp = response as? HTTPURLResponse else {
-                NSLog("Error HTTP: No se pudo obtener el código de estado.")
+            guard let httpResponse = response as? HTTPURLResponse else {
+                NSLog("Invalid HTTP response.")
                 return nil
             }
             
-            if resp.statusCode == HttpResponseCodes.success {
-                let decoder = JSONDecoder.marvelDateDecoder()
-                let seriesResponse = try decoder.decode(SeriesResponse.self, from: data)
-                return seriesResponse.data.results
-            } else {
-                NSLog("Error HTTP: Código \(resp.statusCode)")
+            guard httpResponse.statusCode == HTTPResponseCodes.success else {
+                NSLog("HTTP Error: Status code \(httpResponse.statusCode)")
+                return nil
             }
+            
+            let decoder = JSONDecoder.marvelDateDecoder()
+            let seriesResponse = try decoder.decode(SeriesResponse.self, from: data)
+            return seriesResponse.data.results
         } catch {
-            NSLog("Error al obtener las series: \(error.localizedDescription)")
+            NSLog("Failed to fetch series: \(error.localizedDescription)")
+            return nil
         }
-        
-        return nil
     }
 }
 
-// Mock para pruebas
+/// Mock implementation of `NetworkSeriesProtocol` for testing purposes.
 final class NetworkSeriesMock: NetworkSeriesProtocol {
+    /// Sample mock series data.
     static let mockSeries: [ResultSeries] = [
         ResultSeries(
             id: 101,
@@ -111,8 +116,11 @@ final class NetworkSeriesMock: NetworkSeriesProtocol {
         )
     ]
     
+    /// Returns mock series data after a simulated delay.
+    /// - Parameter characterId: The unique identifier of the character (unused in mock).
+    /// - Returns: An array of `ResultSeries`.
     func fetchHeroSeries(characterId: String) async -> [ResultSeries]? {
-        try? await Task.sleep(nanoseconds: 2_000_000_000)
+        try? await Task.sleep(nanoseconds: 2_000_000_000) // 2-second delay
         return Self.mockSeries
     }
 }

@@ -1,6 +1,15 @@
+//
+//  SeriesRowDefault.swift
+//  MarvelSwiftUI
+//
+//  Created by Hernán Rodríguez on 6/12/24.
+//
+
 import SwiftUI
 
+/// A default row view for displaying a series, optimized for larger screens.
 struct SeriesRowDefault: View {
+    /// The series to display in the row.
     let series: ResultSeries
 
     var body: some View {
@@ -11,19 +20,22 @@ struct SeriesRowDefault: View {
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(AppColors.background) // Reemplazado con AppColors.background
+                .fill(AppColors.background)
         )
-        .shadow(color: AppColors.shadow, radius: 10, x: 0, y: 4) // Usando AppColors.shadow
+        .shadow(color: AppColors.shadow, radius: 10, x: 0, y: 4)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(AppColors.border, lineWidth: 0.3) // Usando AppColors.border
+                .stroke(AppColors.border, lineWidth: 0.3)
         )
         .padding(.horizontal)
     }
 }
 
-// MARK: - Header View (Imagen + Título)
+// MARK: - Header View
+
+/// A view displaying the series image and title.
 private struct SeriesRowHeaderView: View {
+    /// The series to display in the header.
     let series: ResultSeries
 
     var body: some View {
@@ -32,12 +44,12 @@ private struct SeriesRowHeaderView: View {
                 switch phase {
                 case .empty:
                     ZStack {
-                        AppColors.secondaryText.opacity(0.2) // Reemplazado con AppColors.secondaryText.opacity(0.2)
+                        AppColors.secondaryText.opacity(0.2)
                             .frame(height: 250)
                             .cornerRadius(10)
-                            .accessibilityIdentifier("ImageLoading")
                         ProgressView()
                     }
+                    .accessibilityIdentifier("ImageLoading")
                 case .success(let image):
                     image
                         .resizable()
@@ -48,16 +60,16 @@ private struct SeriesRowHeaderView: View {
                         .accessibilityIdentifier("ImageLoaded")
                 case .failure:
                     ZStack {
-                        AppColors.secondaryText.opacity(0.2) // Reemplazado con AppColors.secondaryText.opacity(0.2)
+                        AppColors.secondaryText.opacity(0.2)
                             .frame(height: 250)
                             .cornerRadius(10)
-                        Text("Imagen no disponible")
+                        Text("Image not available")
                             .font(.caption)
-                            .foregroundColor(AppColors.secondaryText) // Reemplazado con AppColors.secondaryText
+                            .foregroundColor(AppColors.secondaryText)
                             .accessibilityIdentifier("ImageFailed")
                     }
                 @unknown default:
-                    AppColors.secondaryText.opacity(0.2) // Reemplazado con AppColors.secondaryText.opacity(0.2)
+                    AppColors.secondaryText.opacity(0.2)
                         .frame(height: 250)
                         .cornerRadius(10)
                 }
@@ -66,9 +78,9 @@ private struct SeriesRowHeaderView: View {
 
             Text(series.title)
                 .font(.headline)
-                .foregroundColor(AppColors.heroName) // Reemplazado con AppColors.heroName
+                .foregroundColor(AppColors.heroName)
                 .padding(8)
-                .background(AppColors.overlayDark) // Reemplazado con AppColors.overlayDark
+                .background(AppColors.overlayDark)
                 .clipShape(Capsule())
                 .padding(8)
                 .accessibilityIdentifier("SeriesTitle")
@@ -77,8 +89,11 @@ private struct SeriesRowHeaderView: View {
     }
 }
 
-// MARK: - Métricas View (Años, Rating, Comics, Eventos)
+// MARK: - Metrics View
+
+/// A view displaying the series metrics such as years, rating, comics, and events.
 private struct SeriesRowMetricsView: View {
+    /// The series whose metrics are displayed.
     let series: ResultSeries
 
     var body: some View {
@@ -86,7 +101,7 @@ private struct SeriesRowMetricsView: View {
             HStack {
                 Text("\(series.startYear)-\(series.endYear)")
                     .font(.caption)
-                    .foregroundColor(AppColors.metricEvents) // Reemplazado con AppColors.metricEvents
+                    .foregroundColor(AppColors.metricEvents)
                     .accessibilityIdentifier("SeriesYears")
 
                 Spacer()
@@ -94,7 +109,7 @@ private struct SeriesRowMetricsView: View {
                 if let rating = series.rating, !rating.isEmpty, rating.lowercased() != "none" {
                     Text(rating)
                         .font(.caption)
-                        .foregroundColor(AppColors.warning) // Reemplazado con AppColors.warning
+                        .foregroundColor(AppColors.warning)
                         .accessibilityIdentifier("SeriesRating")
                 }
             }
@@ -102,30 +117,30 @@ private struct SeriesRowMetricsView: View {
             HStack {
                 Text("\(series.comics.available) Comics")
                     .font(.caption2)
-                    .foregroundColor(AppColors.metricComics) // Reemplazado con AppColors.metricComics
+                    .foregroundColor(AppColors.metricComics)
                     .padding(4)
                     .background(
                         RoundedRectangle(cornerRadius: 4)
-                            .fill(AppColors.metricComics.opacity(0.1)) // Reemplazado con AppColors.metricComics.opacity(0.1)
+                            .fill(AppColors.metricComics.opacity(0.1))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 4)
-                                    .stroke(AppColors.metricComics.opacity(0.5), lineWidth: 0.5) // Reemplazado con AppColors.metricComics.opacity(0.5)
+                                    .stroke(AppColors.metricComics.opacity(0.5), lineWidth: 0.5)
                             )
                     )
                     .accessibilityIdentifier("ComicsAvailable")
 
                 Spacer()
 
-                Text("\(series.events.available) Eventos")
+                Text("\(series.events.available) Events")
                     .font(.caption2)
-                    .foregroundColor(AppColors.metricEvents) // Reemplazado con AppColors.metricEvents
+                    .foregroundColor(AppColors.metricEvents)
                     .padding(4)
                     .background(
                         RoundedRectangle(cornerRadius: 4)
-                            .fill(AppColors.metricEvents.opacity(0.1)) // Reemplazado con AppColors.metricEvents.opacity(0.1)
+                            .fill(AppColors.metricEvents.opacity(0.1))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 4)
-                                    .stroke(AppColors.metricEvents.opacity(0.5), lineWidth: 0.5) // Reemplazado con AppColors.metricEvents.opacity(0.5)
+                                    .stroke(AppColors.metricEvents.opacity(0.5), lineWidth: 0.5)
                             )
                     )
                     .accessibilityIdentifier("EventsAvailable")
@@ -137,6 +152,8 @@ private struct SeriesRowMetricsView: View {
 }
 
 // MARK: - Preview
+
+/// Preview provider for `SeriesRowDefault`.
 struct SeriesRowDefault_Previews: PreviewProvider {
     static var previews: some View {
         SeriesRowDefault(series: SeriesRow_Previews.mockSeries)

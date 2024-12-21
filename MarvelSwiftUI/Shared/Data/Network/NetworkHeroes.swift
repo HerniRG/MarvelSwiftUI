@@ -1,59 +1,62 @@
 import Foundation
 
-// Protocolo para manejar llamadas a la API de Marvel relacionadas con héroes
+/// Protocol for handling Marvel API calls related to heroes.
 protocol NetworkHeroesProtocol {
+    /// Fetches all Marvel heroes.
+    /// - Returns: An array of `ResultHero` if successful, otherwise `nil`.
     func fetchAllHeroes() async -> [ResultHero]?
 }
 
-// Implementación de la clase
+/// Implementation of `NetworkHeroesProtocol` for fetching heroes from the Marvel API.
 final class NetworkHeroes: NetworkHeroesProtocol {
+    /// Fetches all Marvel heroes from the API.
+    /// - Returns: An array of `ResultHero` if the request is successful, otherwise `nil`.
     func fetchAllHeroes() async -> [ResultHero]? {
-        let urlCad = "\(ConstantsApp.CONS_API_URL)\(Endpoints.allHeroes.rawValue)"
-        guard var urlComponents = URLComponents(string: urlCad) else {
-            NSLog("Error: URL inválida: \(urlCad)")
+        let urlString = "\(ConstantsApp.CONS_API_URL)\(Endpoints.allHeroes.rawValue)"
+        guard var urlComponents = URLComponents(string: urlString) else {
+            NSLog("Invalid URL: \(urlString)")
             return nil
         }
         
-        // Añadimos los parámetros de autenticación usando los valores fijos
-        urlComponents.queryItems = [
-            URLQueryItem(name: "apikey", value: ConstantsApp.CONS_API_PUBLIC_KEY),
-            URLQueryItem(name: "ts", value: ConstantsApp.CONS_API_TS),
-            URLQueryItem(name: "hash", value: ConstantsApp.CONS_API_HASH)
-        ]
+        // Add authentication parameters
+        urlComponents.queryItems = HTTPMethods.MarvelAuth.authParameters().map {
+            URLQueryItem(name: $0.key, value: $0.value)
+        }
         
         guard let url = urlComponents.url else {
-            NSLog("Error: URLComponents no pudo generar una URL válida.")
+            NSLog("Failed to generate valid URL from URLComponents.")
             return nil
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = HttpMethods.get
+        request.httpMethod = HTTPMethods.get
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
             
-            guard let resp = response as? HTTPURLResponse else {
-                NSLog("Error HTTP: No se pudo obtener el código de estado.")
+            guard let httpResponse = response as? HTTPURLResponse else {
+                NSLog("Invalid HTTP response.")
                 return nil
             }
             
-            if resp.statusCode == HttpResponseCodes.success {
-                let decoder = JSONDecoder.marvelDateDecoder()
-                let heroResponse = try decoder.decode(Heroe.self, from: data)
-                return heroResponse.data.results
-            } else {
-                NSLog("Error HTTP: Código \(resp.statusCode)")
+            guard httpResponse.statusCode == HTTPResponseCodes.success else {
+                NSLog("HTTP Error: Status code \(httpResponse.statusCode)")
+                return nil
             }
+            
+            let decoder = JSONDecoder.marvelDateDecoder()
+            let heroResponse = try decoder.decode(Heroe.self, from: data)
+            return heroResponse.data.results
         } catch {
-            NSLog("Error al obtener los héroes: \(error.localizedDescription)")
+            NSLog("Failed to fetch heroes: \(error.localizedDescription)")
+            return nil
         }
-        
-        return nil
     }
 }
 
-// Mock para pruebas
+/// Mock implementation of `NetworkHeroesProtocol` for testing purposes.
 final class NetworkHeroesMock: NetworkHeroesProtocol {
+    /// Sample mock heroes.
     static let mockHeroes: [ResultHero] = (0..<100).map { index in
         ResultHero(
             id: index,
@@ -73,9 +76,10 @@ final class NetworkHeroesMock: NetworkHeroesProtocol {
         )
     }
 
+    /// Returns mock heroes after a simulated delay.
+    /// - Returns: An array of `ResultHero`.
     func fetchAllHeroes() async -> [ResultHero]? {
-        // Simular retraso de 2s sin logs
-        try? await Task.sleep(nanoseconds: 2_000_000_000)
+        try? await Task.sleep(nanoseconds: 2_000_000_000) // 2-second delay
         return Self.mockHeroes
     }
 }

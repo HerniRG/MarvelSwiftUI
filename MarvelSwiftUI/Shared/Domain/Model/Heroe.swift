@@ -1,6 +1,7 @@
 import Foundation
 
 // MARK: - Heroe
+/// Represents a Marvel hero response.
 struct Heroe: Codable {
     let code: Int
     let status, copyright, attributionText, attributionHTML: String
@@ -9,12 +10,14 @@ struct Heroe: Codable {
 }
 
 // MARK: - DataClassHero
+/// Contains the data for the hero response.
 struct DataClassHero: Codable {
     let offset, limit, total, count: Int
     let results: [ResultHero]
 }
 
 // MARK: - ResultHero
+/// Represents an individual Marvel hero.
 struct ResultHero: Codable {
     let id: Int
     let name, description: String
@@ -28,6 +31,7 @@ struct ResultHero: Codable {
 }
 
 // MARK: - ComicsHero
+/// Represents the comics information for a hero.
 struct ComicsHero: Codable {
     let available: Int
     let collectionURI: String
@@ -36,12 +40,14 @@ struct ComicsHero: Codable {
 }
 
 // MARK: - ComicsItemHero
+/// Represents an individual comic item.
 struct ComicsItemHero: Codable {
     let resourceURI: String
     let name: String
 }
 
 // MARK: - StoriesHero
+/// Represents the stories information for a hero.
 struct StoriesHero: Codable {
     let available: Int
     let collectionURI: String
@@ -50,12 +56,14 @@ struct StoriesHero: Codable {
 }
 
 // MARK: - StoriesItemHero
+/// Represents an individual story item.
 struct StoriesItemHero: Codable {
     let resourceURI: String
     let name: String
     let type: ItemTypeHero
 }
 
+/// Types of story items.
 enum ItemTypeHero: String, Codable {
     case cover = "cover"
     case empty = ""
@@ -64,6 +72,7 @@ enum ItemTypeHero: String, Codable {
 }
 
 // MARK: - ThumbnailHero
+/// Represents the thumbnail image for a hero.
 struct ThumbnailHero: Codable {
     let path: String
     let thumbnailExtension: ExtensionHero
@@ -73,26 +82,30 @@ struct ThumbnailHero: Codable {
         case thumbnailExtension = "extension"
     }
 
-    // Formato fijo para imágenes horizontales
+    /// Fixed format for horizontal images.
     private let defaultVariant = "landscape_amazing"
 
-    // Método para obtener la URL con formato fijo
+    /// Constructs the URL with a fixed image format.
+    /// - Returns: A string representing the thumbnail URL.
     func url() -> String {
         return "\(path)/\(defaultVariant).\(thumbnailExtension.rawValue)"
     }
 }
 
+/// Represents the extension of the thumbnail image.
 enum ExtensionHero: String, Codable {
     case gif = "gif"
     case jpg = "jpg"
 }
 
 // MARK: - URLElementHero
+/// Represents a URL element for a hero.
 struct URLElementHero: Codable {
     let type: URLTypeHero
     let url: String
 }
 
+/// Types of URLs for a hero.
 enum URLTypeHero: String, Codable {
     case comiclink = "comiclink"
     case detail = "detail"

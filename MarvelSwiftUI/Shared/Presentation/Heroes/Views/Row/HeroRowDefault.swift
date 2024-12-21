@@ -1,6 +1,8 @@
 import SwiftUI
 
+/// A default row view for displaying hero information, optimized for larger screens.
 struct HeroRowDefault: View {
+    /// The hero to display in the row.
     let hero: ResultHero
     
     var body: some View {
@@ -12,11 +14,11 @@ struct HeroRowDefault: View {
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(AppColors.background)
-                .shadow(color: AppColors.shadow, radius: 10, x: 0, y: 4) // Usando AppColors.shadow
+                .shadow(color: AppColors.shadow, radius: 10, x: 0, y: 4)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(AppColors.border, lineWidth: 0.3) // Usando AppColors.border
+                .stroke(AppColors.border, lineWidth: 0.3)
         )
         .padding([.horizontal, .top])
     }
@@ -24,7 +26,9 @@ struct HeroRowDefault: View {
 
 // MARK: - Subviews
 
+/// Displays the hero's image and name in the default row.
 private struct HeroRowImageHeader: View {
+    /// The hero whose image and name are displayed.
     let hero: ResultHero
     
     var body: some View {
@@ -33,7 +37,7 @@ private struct HeroRowImageHeader: View {
                 switch phase {
                 case .empty:
                     ZStack {
-                        AppColors.secondaryText.opacity(0.2) // Placeholder más sutil
+                        AppColors.secondaryText.opacity(0.2)
                             .frame(height: 200)
                             .cornerRadius(10)
                         ProgressView()
@@ -49,7 +53,7 @@ private struct HeroRowImageHeader: View {
                         .accessibilityIdentifier("HeroImage")
                 case .failure:
                     ZStack {
-                        AppColors.error.opacity(0.3) // Indicador de error más claro
+                        AppColors.error.opacity(0.3)
                             .frame(height: 200)
                             .cornerRadius(10)
                         Text("Image not available")
@@ -72,7 +76,7 @@ private struct HeroRowImageHeader: View {
             
             Text(hero.name)
                 .font(.headline)
-                .foregroundColor(AppColors.heroName) // Usando AppColors.heroName
+                .foregroundColor(AppColors.heroName)
                 .padding(8)
                 .background(AppColors.overlayDark)
                 .clipShape(Capsule())
@@ -82,7 +86,9 @@ private struct HeroRowImageHeader: View {
     }
 }
 
+/// Displays the hero's metrics (e.g., available comics and series) in the default row.
 private struct HeroRowMetrics: View {
+    /// The hero whose metrics are displayed.
     let hero: ResultHero
     
     var body: some View {
@@ -115,11 +121,13 @@ private struct HeroRowMetrics: View {
                 )
                 .accessibilityIdentifier("HeroSeriesAvailable")
         }
-        .padding() // Ajuste para mayor claridad
+        .padding()
     }
 }
 
 // MARK: - Preview
+
+/// Preview provider for `HeroRowDefault`.
 struct HeroRowDefault_Previews: PreviewProvider {
     static var previews: some View {
         HeroRowDefault(hero: ResultHero(
@@ -138,5 +146,6 @@ struct HeroRowDefault_Previews: PreviewProvider {
             events: ComicsHero(available: 1, collectionURI: "", items: [], returned: 0),
             urls: []
         ))
+        .previewLayout(.sizeThatFits)
     }
 }

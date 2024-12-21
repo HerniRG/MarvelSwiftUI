@@ -1,25 +1,21 @@
-//
-//  HeroesUseCase.swift
-//  MarvelSwiftUI
-//
-//  Created by Hernán Rodríguez on 6/12/24.
-//
-
 import Foundation
 
-/// Protocolo para manejar los casos de uso relacionados con los héroes
+/// Protocol for handling use cases related to heroes.
 protocol HeroesUseCaseProtocol {
+    /// The repository for fetching heroes.
     var repo: HeroesRepositoryProtocol { get set }
     
-    /// Obtiene todos los héroes disponibles
-    /// - Returns: Una lista de héroes (`[ResultHero]`) o `nil` en caso de error.
+    /// Fetches all available heroes.
+    /// - Returns: An array of `ResultHero` or `nil` if an error occurs.
     func getAllHeroes() async -> [ResultHero]?
 }
 
-/// Implementación del caso de uso de héroes
+/// Implementation of the heroes use case.
 final class HeroesUseCase: HeroesUseCaseProtocol {
     var repo: HeroesRepositoryProtocol
 
+    /// Initializes the use case with a heroes repository.
+    /// - Parameter repo: A repository conforming to `HeroesRepositoryProtocol`. Defaults to `DefaultHeroesRepository()`.
     init(repo: HeroesRepositoryProtocol = DefaultHeroesRepository()) {
         self.repo = repo
     }
@@ -29,9 +25,12 @@ final class HeroesUseCase: HeroesUseCaseProtocol {
     }
 }
 
+/// Mock implementation of `HeroesUseCaseProtocol` for testing.
 final class HeroesUseCaseMock: HeroesUseCaseProtocol {
     var repo: HeroesRepositoryProtocol
 
+    /// Initializes the mock use case with a mock heroes repository.
+    /// - Parameter repo: A mock repository conforming to `HeroesRepositoryProtocol`. Defaults to `DefaultHeroesRepositoryMock()`.
     init(repo: HeroesRepositoryProtocol = DefaultHeroesRepositoryMock()) {
         self.repo = repo
     }

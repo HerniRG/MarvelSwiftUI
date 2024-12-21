@@ -1,8 +1,14 @@
 import SwiftUI
 
+/// A view that displays an error message and an optional retry button for watchOS.
 struct WatchErrorView: View {
-    @Environment(HeroListViewModel.self) var viewmodel
+    /// The view model handling the hero list logic.
+    @Environment(HeroListViewModel.self) var viewModel
+    
+    /// The error message to display.
     let message: String
+    
+    /// Indicates if the error view is called from the series screen.
     let series: Bool
     
     var body: some View {
@@ -20,10 +26,10 @@ struct WatchErrorView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 10)
             
-            if !series { // Muestra el botón Retry solo si `series` es false
+            if !series { // Show the Retry button only if `series` is false
                 Button("Retry") {
                     Task {
-                        await viewmodel.fetchHeroes()
+                        await viewModel.fetchHeroes()
                     }
                 }
                 .buttonStyle(BorderedButtonStyle())
@@ -33,7 +39,9 @@ struct WatchErrorView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+
 // MARK: - Preview
+/// Preview provider for `WatchErrorView`.
 struct WatchErrorView_Previews: PreviewProvider {
     static var previews: some View {
         let mockViewModel = HeroListViewModel(useCase: HeroesUseCaseMock())

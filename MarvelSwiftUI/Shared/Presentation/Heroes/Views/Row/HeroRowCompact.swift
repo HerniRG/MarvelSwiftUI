@@ -1,6 +1,8 @@
 import SwiftUI
 
+/// A compact row view for displaying hero information, optimized for smaller screens like watchOS.
 struct HeroRowCompact: View {
+    /// The hero to display in the row.
     let hero: ResultHero
     
     var body: some View {
@@ -23,7 +25,9 @@ struct HeroRowCompact: View {
 
 // MARK: - Subviews
 
+/// Displays the hero's image and name in the compact row.
 private struct HeroRowCompactImage: View {
+    /// The hero whose image and name are displayed.
     let hero: ResultHero
     
     var body: some View {
@@ -68,7 +72,9 @@ private struct HeroRowCompactImage: View {
     }
 }
 
+/// Displays the hero's metrics (e.g., available comics and series) in the compact row.
 private struct HeroRowCompactMetrics: View {
+    /// The hero whose metrics are displayed.
     let hero: ResultHero
     
     var body: some View {
@@ -103,6 +109,8 @@ private struct HeroRowCompactMetrics: View {
 }
 
 // MARK: - Preview
+
+/// Preview provider for `HeroRowCompact`.
 struct HeroRowCompact_Previews: PreviewProvider {
     static var previews: some View {
         HeroRowCompact(hero: ResultHero(
@@ -121,5 +129,6 @@ struct HeroRowCompact_Previews: PreviewProvider {
             events: ComicsHero(available: 1, collectionURI: "", items: [], returned: 0),
             urls: []
         ))
+        .previewLayout(.sizeThatFits)
     }
 }

@@ -1,8 +1,8 @@
 import Foundation
 
-/// Protocolo para manejar las solicitudes relacionadas con los héroes
+/// Protocol for fetching heroes from the Marvel API.
 protocol HeroesRepositoryProtocol {
-    /// Obtiene todos los héroes disponibles desde la API de Marvel
-    /// - Returns: Una lista de héroes obtenidos o `nil` si ocurre un error.
+    /// Fetches all available heroes.
+    /// - Returns: An array of `ResultHero` or `nil` if an error occurs.
     func getAllHeroes() async -> [ResultHero]?
 }

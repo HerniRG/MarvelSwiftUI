@@ -1,9 +1,14 @@
 import SwiftUI
 
+/// A view that displays a list of series for a specific hero, handling loading, error, and empty states.
 struct SeriesListView: View {
     @State var viewModel: SeriesListViewModel
     let characterId: String
     
+    /// Initializes the view with a specific character ID and optional view model.
+    /// - Parameters:
+    ///   - characterId: The ID of the hero for whom the series are fetched.
+    ///   - viewmodel: The view model to manage series data. Defaults to a new instance.
     init(characterId: String, viewmodel: SeriesListViewModel = SeriesListViewModel()) {
         self.characterId = characterId
         self.viewModel = viewmodel
@@ -37,14 +42,14 @@ struct SeriesListView: View {
 
 // MARK: - Subviews
 
-/// Vista mostrada mientras se cargan las series
+/// A view displayed while the series are loading.
 private struct SeriesLoadingView: View {
     var body: some View {
         LoadingView()
     }
 }
 
-/// Vista mostrada cuando ocurre un error al cargar las series
+/// A view displayed when an error occurs while loading the series.
 private struct SeriesErrorView: View {
     let message: String
     
@@ -53,7 +58,7 @@ private struct SeriesErrorView: View {
     }
 }
 
-/// Vista mostrada cuando la lista de series está vacía
+/// A view displayed when no series are available for the hero.
 private struct SeriesEmptyView: View {
     var body: some View {
         Text("No series available for this hero.")
@@ -63,7 +68,7 @@ private struct SeriesEmptyView: View {
     }
 }
 
-/// Vista mostrada cuando las series se han cargado correctamente
+/// A view displayed when the series have been successfully loaded.
 private struct SeriesContentView: View {
     let series: [ResultSeries]
     
@@ -85,11 +90,12 @@ private struct SeriesContentView: View {
 
 // MARK: - Preview
 
+/// Preview provider for `SeriesListView`.
 struct SeriesListView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModelMock = SeriesListViewModel(useCase: SeriesUseCaseMock())
         
-        // Simular estado cargado con datos
+        // Simulate the loaded state with mock data
         viewModelMock.state = .loaded
         viewModelMock.series = NetworkSeriesMock.mockSeries
         

@@ -1,9 +1,9 @@
 import Foundation
 
-/// Protocolo para manejar las solicitudes relacionadas con las series
+/// Protocol for fetching series related to heroes from the Marvel API.
 protocol SeriesRepositoryProtocol {
-    /// Obtiene las series asociadas a un héroe específico desde la API de Marvel
-    /// - Parameter characterId: El identificador del héroe.
-    /// - Returns: Una lista de series (`[Result]`) o `nil` si ocurre un error.
+    /// Fetches series associated with a specific hero.
+    /// - Parameter characterId: The unique identifier of the hero.
+    /// - Returns: An array of `ResultSeries` or `nil` if an error occurs.
     func getHeroSeries(characterId: String) async -> [ResultSeries]?
 }
